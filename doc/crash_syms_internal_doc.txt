@@ -1,0 +1,111 @@
+
+
+Each crash_report consists of sections, with a delimiter of 10 '=' chars on
+a line by themselves:
+==========
+
+Each section has a header, with a name in square brackets, as the
+first line in the section.  Examples:
+[task info]
+[memory maps]
+[registers]
+[code around PC] - new
+[code] - new
+[stack dump]
+[call stack]
+[disassemble]
+[exception info]
+[kernel log]
+
+sections from exception monitor logs (abandoned):
+[current task] - converted to [task info]
+[Exception Syndrome] - converted to [exception info]
+[system maps] - converted to [memory maps]
+[register dump] - converted to [registers]
+
+== specifying symbol information ==
+You can tell the crash_handler what symbol information to use, by specifying
+one or more of the following options:
+
+--find-root=<dir>
+--system-map
+--modules
+
+Symbolic conversions done:
+v1: r4: 0x00008954  v2: r5: 0x4002a378  v3: r6: 0x000091c0  v4: r7: 0x402ca7e4
+
+v1: r4: 0x00008954  v2: r5: 0x4002a378  v3: r6: 0x000091c0  v4: r7: 0x402ca7e4
+    +0x00008954: cause_segmentation_fa+0xc : segv_handler+0x954
+    +0x4002a378: pthread_start_thread+0x104 : libpthread-0.10.so+0x5378
+    +0x000091c0: thread_entry+0xc : segv_handler+0x11c0
+    +0x402ca7e4: clone@@GLIBC_2.4+0x54 : libc-2.5.so+0xba7e4
+
+
+== name_map ==
+A name_map is a mapping from a base program name, to a file path to an
+ELF file (program or object file with symbols).
+In the case of kernel objects (.ko files), the ".ko" suffix is removed
+from the base name.
+
+Here's an example: [('sh', '/bin/sh'), ('libc.so', '/usr/lib/libc.so')]
+
+A name_map is used to find the symbols associated with a particular
+named map segment in the program, by associating those to the symbols
+for a particular ELF file on the host system.
+
+The name_map is generated from multiple sources:
+ - from reading a directory of ELF files
+ - from reading ELF files listed on the command line to crash_syms
+ - from a name_map listing file, generated previously
+
+= sub-programs used =
+The following programs are used to retrieve symbol information from ELF files:
+readelf
+
+the program tries to use the correct readelf program.
+
+The readelf program can be specified on the command line with:
+--readelf=<readelf-program-name>
+
+If it is not specified, then the crash_syms tries to find the correct readelf
+program by guessing the architecture of the crash_report.
+
+get_readelf()
+  uses results from do_guess_readelf() and do_guess_arch()
+
+do_guess_arch()
+  reads [register_dump] section, and calulcates either powerpc, arm, or mips
+  based on the format of the register section.
+
+
+= other options =
+--print-mem-map - used as a debug tool, to print out the current memory map
+(with symbol information)
+
+
+= things to try: =
+
+./crash_syms --find-root=../test --print-name-map >saved_name_map.txt
+ - use this to produce a name map for subsequent program runs
+./crash_syms --name-map=saved_name_map.txt
+ - use this to use a saved name map
+
+You can also specify ELF files (programs or libraries) on the command line:
+./crash_syms --find-root=/target/root ~/work/test/mytestprog crash_repot_01
+ - use find-root for libraries and modules, and direct references for
+ individual programs you are working on
+
+= parsing =
+The parser for emlogconv is pretty weird.  It looks like it was written
+in functional programming style, rather than imperative style.
+
+It expects multiple crash reports in a single file, separated by lines
+consisting of 10 equals signs:
+    '=========='
+
+However, that doesn't apply to the crash_handler.
+
+Section names are as indicated above, short words or phrases, inside
+square brackets.  The most significant of these is the map section, which
+is used for finding the mappings.
+

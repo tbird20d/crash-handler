@@ -1,0 +1,637 @@
+##############################################################
+#
+#             Crash handler user's manual
+#                    version 1.0
+#
+#           Copyright 2012 Sony Corporation
+#
+##############################################################
+
+This file contains instructions for building, installing and
+using the crash_handler program.
+
+= Introduction =
+Crash_handler is a program for recording information about program
+crashes on embedded Linux systems.  It uses features of recent Linux
+kernels to capture process crash events, and save off individual crash
+reports, as well as to record information about the overall crash
+history of a device.
+
+It is originally based on Android's debuggerd, which performs similar
+functionality. However, debuggerd requires that a dedicated debugging
+process be running permanently on the system, where crash_handler does
+not.  Also, crash_handler adds a few new features not found in debuggerd.
+
+When a crash occurs, crash_handler collects information about the dying
+process from /proc, from the kernel message log, and uses the ptrace API
+to query the process memory image. This information is saved in a crash
+report. Up to 10 crash_reports are saved, before the oldest ones start
+being overwritten. Also, a crash journal file is maintained, which
+records information about the crash history of the device.
+
+== Home page ==
+The home page for this program is at: http://elinux.org/Crash_handler
+Please check this site for program updates.
+
+== Presentation ==
+A presentation, given by Tim Bird at the Embedded Linux Conference
+in 2012 is available from the project home page, as well as in
+this documentation directory.
+
+See:
+"Embedded-Appropriate Crash Handling in Linux"
+http://elinux.org/images/1/1b/Embedded-Appropriate_Crash_Handling_in_Linux.pdf
+
+== Features ==
+Here are some of the neat features of crash_handler:
+
+* crash_handler has the ability to capture crash reports on processes
+  without requiring any modification to those process or the system libraries.
+  (By contrast, debuggerd requires features in the system C library and dynamic
+  linker.)
+
+* A crash report has information from the process memory image (via ptrace),
+  /proc, and kernel log
+
+* crash_handler can maintain a "crash journal" to record crash patterns
+
+* crash_handler can work with a very small amount of space for crash
+  reports and the journal.
+** For example, the crash journal is less than 4k in size
+** Each crash report is less than about 12K, limited to a total of 10
+   crash reports per system.
+** Logs are automatically rotated, to limit the space used for crash
+  reporting.
+
+* crash_handler requires very little overhead on the system
+** It requires no separate running process or daemon.
+** crash_handler is started on-demand when a process crashes, and exits
+   when done
+
+* crash_handler can create an ARM stack backtrace, even if the programs
+  and libraries on the system have no frame pointers, symbols or unwind
+  information.
+
+* symbol-table lookups are done off-target (usually on the development
+  host machine).  This matches the way that embedded developers are used
+  to working - in a constrained target environment with no symbol
+  information available on the device itself.
+
+= Patching, Building and Installing =
+This section has instructions for building and installing the
+crash_handler program.
+
+== Kernel patch ==
+Unfortunately, the current version of the crash_handler requires a 
+small patch (11 lines, including comment) to the Linux kernel in
+order to work correctly.  This patch is found in the 'patches' directory
+and should be applied to your kernel prior to using crash_handler.
+
+The patch modifies ptrace_attach operation in the kernel to avoid sending
+a SIGSTOP signal, when the attach operation is happening in the context
+of a coredump.  This patch should apply to kernel version 3.0 through 3.3.
+It may work on other kernels as well, but has not been tested.
+
+To apply the patch, do something like the following:
+ $ cd <kernel source dir top>
+ $ patch -p1 </path/to/crash_handler/patches/ptrace-fixup-for-crash_handler.patch
+
+Now build the kernel and install it on your target device.
+
+== Building crash_handler ==
+If you are cross-compiling (which is likely, if you are doing embedded
+Linux development) first set the CROSS_COMPILE environment variable to
+contain your toolchain prefix.
+ $ export CROSS_COMPILE=arm-sony-linux-gnueabi-armv7a-dev-
+
+Your toolchain prefix is likely to be much simpler than this, and may
+be something like: 'arm-eabi-' or 'arm-unknown-linux-gnu-'.
+
+To build crash_handler, type "make" in the top-level directory.
+ $ make
+
+The program file 'crash_handler' will be creatd in the top level
+directory.
+
+=== Customization options ===
+There are a number of compile-time configuration variables that
+can be used to customize the crash_handler behavior and output.
+See Appendix C for a description of these variables.
+
+== Installing ==
+In order to install crash_handler, you must copy it to the target system,
+and then configure the running system to use it when a crash occurs.
+
+The Makefile has a 'make install' target. However this is currently
+configured to run commands that work in a Sony internal development
+environment.  You can alter the 'make install' target in the Makefile,
+by uncommenting the "default_install:" target, and supplying some
+appropriate commands to copy the crash_handler binary to your target
+system.
+
+Basically, any set of commands which will copy the 'crash_handler'
+program to the target device, and set it's permissions to executable
+should work.
+
+Once crash_handler is on your target system, configure the running 
+system to use it by executing it with the --install option.
+This must be done as root.
+ $ ./crash_handler --install
+
+This sets /proc/sys/kernel/core_pattern with the correct string, and
+adjust a few other settings that are required for crash_handler to
+run.
+
+== Output ==
+When a program crashes, the kernel automatically calls crash_handler,
+which collects information and writes to the crash journal and to a
+crash report.
+
+The crash journal is at: /tmp/crash_journal
+
+Individual crash reports are in: /tmp/crash_reports/, and have the names
+'crash_report_0x', where x is a number from 0 to 9
+
+The locations and names of these output files can be changed with
+compile-time configuration variables defined in crash_handler.c
+See Appendix C for descriptions of these variables.
+
+== Interpreting results ==
+=== The crash report ===
+A crash report consists of several sections:
+
+* task info - a summary of task information
+* memory map - a list of the memory areas of the process
+* registers - the processor registers at the time of the crash
+* code around PC - a listing of the instructions codes surrounding the
+   location where the CPU was running in the process
+* stack trace - a stack backtrace for the process
+* stack dump - a raw dump of values on the stack
+* kernel log - tail of the kernel log (last 1000 bytes)
+
+The crash report has the format seen in Appendix A
+
+=== Adding Symbols to a crash report ===
+It is rare for an embedded product to ship with binary files that
+contain full symbolic information.  Usually these are stripped from the
+programs and libraries to conserve space.  However, a utility called
+'crash_syms' is provided to annotate the crash reports with symbol
+information. 
+
+See the section on crash_syms for information about how to run
+this program to annotate a crash report.
+
+=== The crash journal ===
+The crash handler can also be configured to produce a "crash journal",
+which is a summary of the crash events on a system.  This is an
+abbreviated record of crashes, containing a small amount of information
+about the crashes on the system.
+
+The crash_journal records the start date and time of the journal and
+the total number of crashes that crash_handler has processed.
+
+Also, it records very brief information about a set of crashes on the
+machine.  Specifically, for each program path that it sees, it 
+records:
+  1) the pid of the process (for the first crash of that program path)
+  2) the program path
+  3) a count of the number of times that program has crashed
+  4) date and time for up to 3 of the most recent crashes for that program
+
+A sample of a crash journal, along with explanations of the fields
+is available in Appendix B.
+
+The crash journal is intended to provide a very concise history of crash
+events for a device, so that if there is any pattern of crashes over a
+long time, it can be detected.  For example, one thing that the crash
+journal might be able to indicate apart from the crash reports, is
+whether some infrequent crash is being obscured by a lot of crash
+reports for some frequently-crashing program.
+
+== Crash_syms - crash report annotation program ==
+
+The crash_syms utility is used to convert some addresses found in a
+crash_report to symbols.  This can be helpful to decipher the stack
+trace of the process that died.
+
+Crash_syms is a python program, and thus requires a python interpreter
+which many embedded targets do not have. Normally crash_syms will be
+run on a separate host machine, where unstripped binaries are located. 
+
+To use crash_syms, you specify a set of ELF binary files (programs or or
+libraries), which have not been stripped of their symbols, as well as the
+filename of the crash report you are processing.  The crash_syms program reads
+the "memory maps" section of the crash report, and uses that information to
+convert addresses found in the report into references to binary files and
+functions.  It uses symbol information found in the referenced binary ELF files
+to provide annotations to the crash report about addresses that it finds
+matches for.
+
+Here is a very simple example of using crash_syms to annotate the
+crash report for a program called "fault-test-unwind".
+
+ $ crash_syms /path/to/binary/fault-test-unwind crash_report_01
+
+== crash_syms output ==
+For each address that crash_syms finds in the output, it examines
+the memory map and any matching ELF binary files, and finds the closest
+symbol matching that address.  It then prints that information following
+the corresponding crash report line.  Note that if a line contains 
+multiple addresses, then crash_syms may add multiple annotations to
+its output, for each address for which is finds a match.
+
+Following is an example of the type of annotations that crash_syms makes
+to a report.
+
+In the call stack section, the crash handler "table unwinder" call
+tracer has produced a set of addresses corresponding to sub-routine call
+sites in the program:
+
+=== original crash_report contents ===
+Here are the original lines from a crash report:
+
+ [call stack]
+ = table unwinder =
+         #00  pc 00008750  /tmp/fault-test-unwind
+         #01  pc 000087f8  /tmp/fault-test-unwind
+         #02  pc 000088bc  /tmp/fault-test-unwind
+         #03  pc 00015570  /devel/lib/libc-2.11.2.so
+
+
+When fed as input to crash_syms, along with references to the executable
+fault-test-unwind, crash_syms produced the following output:
+
+ [call stack]
+ = table unwinder =
+         #00  pc 00008750  /tmp/fault-test-unwind
+    +0x00008750: do_fault+0x24 : fault-test-unwind+0x750
+         #01  pc 000087f8  /tmp/fault-test-unwind
+    +0x000087f8: delay_then_fault+0x98 : fault-test-unwind+0x7f8
+         #02  pc 000088bc  /tmp/fault-test-unwind
+    +0x000088bc: main+0xb8 : fault-test-unwind+0x8bc
+         #03  pc 00015570  /devel/lib/libc-2.11.2.so
+
+By mapping these addresses to symbols, it is much easier to find the
+source of the problem for this particular fault.
+
+== Specifying binary ELF files ==
+Crash_syms uses unstripped binary ELF files to retrieve symbol
+information that is used for its annotations.  There are three ways of
+specifying ELF files for the system to use.
+
+1. on the command line by direct reference
+   * do this by specifying the name of one or more ELF files on the command line
+
+2. by specifying a directory which will be scanned for all ELF files
+   * do this by using the --search-dir option
+
+3. by specying a file containing a name/filename mapping 
+   * do this using the --name-map option
+
+For option 2, multiple directories can be specified.  That is multiple
+instances of --search-dir=<directory> can be used, to specify a number
+of locations to look for ELF binaries for use by crash_syms.
+
+Because scanning a large filesystem for ELF binaries can be
+time-consuming, crash_syms provides a way to generate a cache file with
+the listing of ELF programs and their basenames.  This is done by using
+one or more --find-root options (and any direct references to ELF files)
+and using the --print-name-map option.
+
+This will scan the indicated directories and files, and produce a list
+of ELF binaries and their accompanying base filenames.  This can be
+saved to a file for subsequent use.
+
+Example:
+ $ crash_syms --find-root=/target/rootdir/lib ../test/sample-prog \
+	--print-name-map crash_report_01 >saved-name-map.txt
+ $ cat saved-name-map.txt
+libthread.so /target/rootdir/lib/libpthread.so
+libthread_db.so.1 /target/rootdir/lib/libthread_db.so.1
+libm.so /target/rootdir/lib/libm.so
+libcrypt.so /target/rootdir/lib/libcrypt.so
+librt.so /target/rootdir/lib/librt.so
+libstdc++.so /target/rootdir/lib/libstdc++.so
+libld.so /target/rootdir/lib/libld.so
+libstdc++.so.6.0.14 /target/rootdir/lib/libstdc++.so.6.0.14
+libdl.so /target/rootdir/lib/libdl.so
+libsupc++.so /target/rootdir/lib/libsupc++.so
+libthread_db.so /target/rootdir/lib/libthread_db.so
+libsupc++.so.0.0.0 /target/rootdir/lib/libsupc++.so.0.0.0
+libgcc_s.so.1 /target/rootdir/lib/libgcc_s.so.1
+libsupc++.so.0 /target/rootdir/lib/libsupc++.so.0
+ld.so /target/rootdir/lib/ld.so
+libgprof.so /target/rootdir/lib/libgprof.so
+libstdc++.so.6 /target/rootdir/lib/libstdc++.so.6
+libssp.so /target/rootdir/lib/libssp.so
+libc.so /target/rootdir/lib/libc.so
+sample-prog ../test/sample-prog
+
+With this output saved to a file, you can use it on subsequent
+invocations of crash_syms, by specifying it with the --name-map option,
+like so:
+ $ crash_syms --name-map=saved-name-map.txt  crash_report_01
+
+This can save a lot of typing, and some execution overhead when running
+crash_syms frequently.
+
+== Speciyfing what readelf program to use ==
+When working with embedded systems, often a cross-compiling toolchain
+is used to create the binary files (programs and libraries) used on
+the system.  crash_syms uses 'readelf' to process the symbols for
+its output.  A number of options to crash_syms have to do with
+allowing the user to specify or verify that the correct 'readelf'
+helper program is used.
+
+A user can directly specify the 'readelf' program that crash_syms should
+use, by using the --readelf option.  If no readelf program is explicitly
+specified, crash_syms will try to guess the correct one, by looking
+at the architecture inferred by the crash report, and looking for a 
+cross toolchain 'readelf' on the current path.  For example, if
+crash_syms detects that the crash report is for an ARM processor,
+it will search the current program search PATH for a program matching
+the regular expressions "arm*readelf".
+
+You can check what architecture and readelf program crash_syms has
+guessed, using the options "--print-guess-arch" and
+"--print-guess-readelf" respectively.
+
+= Appendices =
+== Appendix A - Sample crash report ==
+Here is a sample crash report:
+-------------------------------
+[task info]
+pid: 136, uid: 0, gid: 136 
+cmdline: /tmp/fault-test-unwind
+name: fault-test-unwi
+signal: 11
+
+[memory maps]
+ 00008000-00009000 r-xp 00000000 00:0d 1614142    /tmp/fault-test-unwind
+ 00010000-00011000 rw-p 00000000 00:0d 1614142    /tmp/fault-test-unwind
+ 2aab1000-2aab2000 rw-p 00000000 00:00 0 
+ 2ab09000-2ab26000 r-xp 00000000 00:0d 1611280    /devel/lib/ld-2.11.2.so
+ 2ab26000-2ab27000 rw-p 00000000 00:00 0 
+ 2ab2d000-2ab2e000 r--p 0001c000 00:0d 1611280    /devel/lib/ld-2.11.2.so
+ 2ab2e000-2ab2f000 rw-p 0001d000 00:0d 1611280    /devel/lib/ld-2.11.2.so
+ 2ab9c000-2ab9d000 rw-p 00000000 00:00 0 
+ 2abf0000-2abf1000 rw-p 00000000 00:00 0 
+ 2ac0c000-2ac17000 r-xp 00000000 00:0d 1610011    /devel/usr/lib/libgcc_s.so.1
+ 2ac17000-2ac1e000 ---p 0000b000 00:0d 1610011    /devel/usr/lib/libgcc_s.so.1
+ 2ac1e000-2ac1f000 rw-p 0000a000 00:0d 1610011    /devel/usr/lib/libgcc_s.so.1
+ 2ac1f000-2ad49000 r-xp 00000000 00:0d 1611263    /devel/lib/libc-2.11.2.so
+ 2ad49000-2ad51000 ---p 0012a000 00:0d 1611263    /devel/lib/libc-2.11.2.so
+ 2ad51000-2ad53000 r--p 0012a000 00:0d 1611263    /devel/lib/libc-2.11.2.so
+ 2ad53000-2ad54000 rw-p 0012c000 00:0d 1611263    /devel/lib/libc-2.11.2.so
+ 2ad54000-2ad57000 rw-p 00000000 00:00 0 
+ 7ebcf000-7ebf0000 rw-p 00000000 00:00 0          [stack]
+ ffff0000-ffff1000 r-xp 00000000 00:00 0          [vectors]
+
+[exception info]
+cannot get siginfo: 22 (Invalid argument) 
+
+[registers]
+ r0 00000000  r1 7ebefbc8  r2 0000001b  r3 00000000
+ r4 7ebefcf0  r5 00000000  r6 000085ec  r7 00000000
+ r8 00000000  r9 00000000  10 2ab2e000  fp 7ebefcac
+ ip 00000000  sp 7ebefca0  lr 0000871c  pc 00008750  cpsr 00000010
+
+[code around PC]
+0x00008710: ebffff91
+0x00008714: e51b000c
+0x00008718: ebffff9e
+0x0000871c: ea000000
+0x00008720: e1a00000
+0x00008724: e24bd004
+0x00008728: e8bd8800
+0x0000872c: e92d4800
+0x00008730: e28db004
+0x00008734: e24dd008
+0x00008738: e3080978
+0x0000873c: e3400000
+0x00008740: ebffffd4
+0x00008744: e3a03000
+0x00008748: e50b3008
+0x0000874c: e51b3008
+0x00008750: e5d33000 <-- PC
+0x00008754: e54b3009
+0x00008758: e24bd004
+0x0000875c: e8bd8800
+0x00008760: e92d4800
+0x00008764: e28db004
+0x00008768: e24dd010
+0x0000876c: e50b0010
+0x00008770: e51b3010
+0x00008774: e50b3008
+0x00008778: ea000018
+0x0000877c: e3083988
+0x00008780: e3403000
+0x00008784: e1a00003
+0x00008788: e51b1008
+0x0000878c: ebffff7b
+[call stack]
+= table unwinder =
+         #00  pc 00008750  /tmp/fault-test-unwind
+         #01  pc 000087f8  /tmp/fault-test-unwind
+         #02  pc 000088bc  /tmp/fault-test-unwind
+         #03  pc 00015570  /devel/lib/libc-2.11.2.so
+Relative PC=0x618 from /tmp/fault-test-unwind not contained in EXIDX
+PC=0x8618 SP=0x7ebefe28
+= best-guess unwinder =
+Crash occured at PC: 0x00008750
+#0:0x00008750 in function 0x00008598 at offset 0x1b8
+#1:0x000087f8 in function 0x0000872c at offset 0xcc
+#2:0x000088bc in function 0x00008760 at offset 0x15c
+#3:0x2ac34528 in function 0x26c49d40 at offset 0x3fea7e8
+#4:0x2ab16554 in function 0x2ab12558 at offset 0x3ffc
+#5:0x00008614 in function 0x00008544 at offset 0xd0
+
+[stack dump]
+    7ebefc60  7ebefcac  
+    7ebefc64  2ab16558  /devel/lib/ld-2.11.2.so
+    7ebefc68  2aab1300  
+    7ebefc6c  00000001  
+    7ebefc70  00000001  
+    7ebefc74  00000000  
+    7ebefc78  00000000  
+    7ebefc7c  7ebefcbc  
+    7ebefc80  7ebeff15  
+    7ebefc84  7ebefcf0  
+    7ebefc88  00000000  
+    7ebefc8c  000085ec  /tmp/fault-test-unwind
+    7ebefc90  00000003  
+    7ebefc94  00000088  
+    7ebefc98  7ebefcac  
+    7ebefc9c  00008744  /tmp/fault-test-unwind
+    7ebefca0  00000003  
+
+[kernel log]
+<6>bio: create slab <bio-0> at 0
+<5>SCSI subsystem initialized
+<6>usbcore: registered new interface driver usbfs
+<6>usbcore: registered new interface driver hub
+<6>usbcore: registered new device driver usb
+<6>Advanced Linux Sound Architecture Driver Version 1.0.24.
+<6>Switching to clocksource sti
+<6>NET: Registered protocol family 2
+<6>IP route cache hash table entries: 4096 (order: 2, 16384 bytes)
+<6>TCP established hash table entries: 16384 (order: 5, 131072 bytes)
+<6>TCP bind hash table entries: 16384 (order: 4, 65536 bytes)
+<6>TCP: Hash tables configured (established 16384 bind 16384)
+<6>TCP reno registered
+<6>UDP hash table entries: 256 (order: 0, 4096 bytes)
+<6>UDP-Lite hash table entries: 256 (order: 0, 4096 bytes)
+<6>NET: Registered protocol family 1
+<6>RPC: Registered named UNIX socket transport module.
+<6>RPC: Registered udp transport module.
+<6>RPC: Registered tcp transport module.
+<6>RPC: Registered tcp NFSv4.1 backchannel transport module.
+<6>PMU: registered new PMU device of type 0
+<6>msgmni has been set to 766
+<6>io scheduler noop registered
+<6>io scheduler cfq registered (default)
+<6>LTT : ltt-relay init
+<7>LTT : State dump init
+<6>LTT : ltt-kprobes init
+<6>Serial: 8250/16550 driver, 2 ports, IRQ sharing disabled
+<6>serial8250.0: ttyS0 at MMIO 0xe1020000 (irq = 40) is a TI16750
+<6>serial8250.0: ttyS1 at MMIO 0xe1030000 (irq = 41) is a TI16750
+<6>console [ttyS1] enabled
+<6>loop: module loaded
+<6>PPP generic driver version 2.4.2
+<6>PPP Deflate Compression module registered
+<6>PPP BSD Compression module registered
+<6>smsc911x: Driver version 2008-10-21
+<6>smsc911x-mdio: probed
+<6>smsc911x smsc911x.0: eth0: attached PHY driver [Generic PHY] (mii_bus:phy_addr=0:01, irq=-1)
+<6>smsc911x smsc911x.0: eth0: MAC Address: 00:01:9b:04:02:97
+<6>ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+<6>emxx-ehci-driver emxx-ehci-driver: EMXX EHCI
+<6>emxx-ehci-driver emxx-ehci-driver: new USB bus registered, assigned bus number 1
+<6>emxx-ehci-driver emxx-ehci-driver: irq 115, io mem 0xe2701000
+<6>emxx-ehci-driver emxx-ehci-driver: USB 2.0 started, EHCI 1.00
+<6>hub 1-0:1.0: USB hub found
+<6>hub 1-0:1.0: 1 port detected
+<6>ohci_hcd: USB 1.1 'Open' Host Controller (OHCI) Driver
+<6>emxx-ohci-driver emxx-ohci-driver: EMXX OHCI
+<6>emxx-ohci-driver emxx-ohci-driver: new USB bus registered, assigned bus number 2
+<6>emxx-ohci-driver emxx-ohci-driver: irq 115, io mem 0xe2700000
+<6>hub 2-0:1.0: USB hub found
+<6>hub 2-0:1.0: 1 port detected
+<6>Initializing USB Mass Storage driver...
+<6>usbcore: registered new interface driver usb-storage
+<6>USB Mass Storage support registered.
+<6>i2c /dev entries driver
+<6>usbcore: registered new interface driver usbhid
+<6>usbhid: USB HID core driver
+<6>ALSA device list:
+<6>  No soundcards found.
+<6>TCP cubic registered
+<6>NET: Registered protocol family 17
+<6>VFP support v0.3: implementor 41 architecture 3 part 30 variant 9 rev 1
+<5>Registering SWP/SWPB emulation handler
+<6>smsc911x smsc911x.0: eth0: SMSC911x/921x identified at 0xa0820000, IRQ: 167
+<5>Sending DHCP requests ..., OK
+<4>IP-Config: Got DHCP answer from 192.168.2.1, my address is 192.168.2.92
+<4>IP-Config: Complete:
+<4>     device=eth0, addr=192.168.2.92, mask=255.255.255.0, gw=192.168.2.1,
+<4>     host=192.168.2.92, domain=, nis-domain=(none),
+<4>     bootserver=192.168.2.1, rootserver=192.168.2.1, rootpath=/target/kzm-a9
+<6>VFS: Mounted root (nfs filesystem) on device 0:13.
+<6>Freeing init memory: 116K
+<20> [136] I was minding my own business, when...
+<20> [136] inside do_fault
+--- done ---
+
+== Appendix B - Sample crash journal ==
+Here is a sample crash_journal, for a system that had fault-test and
+fault-test-unwind crash on it a total of 9 times.  The timestamps for
+the crashes are all close to 1970 (the epoch), since this board did not
+have a realtime clock and on every reboot it started from 1970-01-01-01:00:00.
+
+-----------------------------
+
+start=1970-01-17-15:56:25
+total=9
+165 /tmp/fault-test-unwind 1 1970-01-17-18:56:58 
+120 /tmp/fault-test 5 1970-01-17-18:52:47 1970-01-17-18:48:52 1970-01-17-18:39:01 
+94 ./fault-test-unwind 1 1970-01-17-15:57:37
+86 ./fault-test 2 1970-01-17-18:25:49 1970-01-17-15:56:25 
+
+-----------------------------
+
+First, note that even though ./fault-test and /tmp/fault-test are likely
+the same program, they are recorded separately in the log.  That is, the
+crash_handler does a string match on the program path to determine
+matching programs.
+
+This shows that /tmp/fault-test/unwind crashed once, on the 17th at 18:56:58
+/tmp/fault-test crashed 5 times, with the times of the last three crashes
+recorded in the journal.  The pid for each line shows only the first pid
+for which a crash occured for a given program (command path).  So, for
+example, although /tmp/fault-test crashed 5 times, only the pid of the
+first crash (120) is recorded in the journal.  The time of that crash is
+not available, since it has rotated out of the allowed time slots (3 per
+crash) for that program.
+
+
+== Appendix C - crash_handler Configuration Options ==
+
+In crash_handler.c, at the top of the source file, is a section of
+#defines which can be adjusted to control how the crash_handler
+operates.
+
+Here are the available options:
+
+* MAX_CRASH_REPORTS
+default: 10
+
+Controls the number of crash reports that are saved on the system.
+When that number of crash reports already exist on the system, the one
+with the oldest timestamp is re-used (that is, the file is overwritten
+with the new crash report).
+
+* CRASH_REPORT_DIR
+This has the directory where crash reports will be created.
+
+* CRASH_REPORT_FILENAME
+This has the base filename for the crash report files.
+(Android historically used "tombstone" for this.)
+
+The final crash report filename is this base name, suffixed with
+and underscore and a 2-digit number. e.g. crash_report_02
+
+* DO_CRASH_JOURNAL
+default value: 1
+
+Can set to 0 to disable creation and maintenance of the crash journal
+
+* DO_CORE_FILE
+default value: 0
+
+Can set to 1 to have the crash_handler write the entire core file into the
+crash report directory.  It will be called core_xx, where xx is a number
+matching the number of the crash report for this crash.
+
+* USE_TABLE_UNWINDER
+default value: 1
+
+Compile in the ARM stack unwinder based on unwind tables built into the 
+ELF image of the executable.  This unwinder will only be effective if
+programs are compiled with -funwind-tables (or some other compilation
+flag that turns on this option).
+
+* USE_GUESS_UNWINDER
+default value: 1
+
+Compile in the ARM stack unwinder based on "best guess" - which compares
+values on the stack with code sequences to try to find matching call-sites
+and return addresses.
+
+* USE_MCTERNAN_UNWINDER
+default value: 0
+
+Compile in the McTernan stack unwinder.  As of this writing, the McTernan
+unwinder has not been integrated into the code yet.  (This is a work in
+progress).
+

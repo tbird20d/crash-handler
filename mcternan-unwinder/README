@@ -1,0 +1,131 @@
+Getting Started
+===============
+
+The simplest demonstration of the unwinder is to use the simulation client
+and supplied memory image.  Building and running this can be done on the PC
+in the following way:
+
+    $ make unwind
+
+This will use GCC to build the unwinder and the simulation client that is
+already configured to read the memory image provided in memhigh.dat
+and memlow.dat.  The simulation can be ran under a debugger, Valgrind etc...
+and can be ran as follows:
+
+    $ ./unwind
+    [ Lots of ouput removed ] 
+    Read 0x680ae800 H
+    fread() failed: : No error
+    A: 0x0000a904
+    A: 0x0000a97c
+    A: 0x0000a9e8
+    A: 0x0000a9d8
+    A: 0x0000a9d8
+    A: 0x0000a9d8
+    A: 0x0000a9d8
+    T: 0x0000ab0e
+    T: 0x0000ab28
+    A: 0x0000aabc
+    A: 0x0000aad8
+    A: 0x0000b4bc
+    A: 0xe800e800
+
+    Result: 8
+    
+This shows the unwound stack addresses and processor mode (A = ARM, T = Thumb).
+The supplied sym file gives the addresses of the functions, making it possible
+to lookup the function names on the stack.
+
+NOTE: If you have ran make without the 'unwind' target specified, it will have
+defaulted to building the ARM target, and depending on the environment may 
+have produced some object files that are incompatible with GCC.  Executing
+'make clean' will remove these objects.
+
+
+Building an ARM Image
+=====================
+
+You will need ARM tools installed as well as an emulator.  I use RVCT with the
+ARMSD emulator from the SDT version of the tool chain (RVD, the newer debugger
+is very expensive, and the older debugger is fine for this purpose).
+
+To build an executable ARM image, do the following:
+
+    $ make clean
+    $ make 
+    
+This will delete any old PC format objects, and then compile a version of the
+code that can be executed in ARMSD in the following manner:
+
+    $ armsd unwind.axf
+    ARM Source-level Debugger vsn 4.60 (ARM Ltd SDT2.51) [Build number 128]
+    RDI 1.5->1.0 Protocol converter vsn 0.1 [Feb 12 2000]
+    ARMulator SDT2.51 [Build number 128]
+    ARM7TDMI, Tracer, 4GB, Dummy MMU, Soft Angel 1.4 [Angel SWIs], FPE,
+      Profiler, Pagetables, Little endian.
+    Object program file unwind.axf
+    armsd: go
+    [ Lots of ouput removed ] 
+    A: 0x0000ac4c
+    A: 0x0000acc4
+    A: 0x0000ad20
+    A: 0x0000ad20
+    A: 0x0000ad20
+    A: 0x0000ad20
+    T: 0x0000ae56
+    T: 0x0000ae70
+    A: 0x0000ae04
+    A: 0x0000ae20
+    A: 0x0000b420
+    
+    Result: 1
+    2525 9Program terminated normally at PC = 0x0000bd50 (_sys_exit + 0x8)
+    +0008 0x0000bd50: 0xef123456  V4.. :    swi      0x123456
+    armsd:
+    
+Since a target image is available, the resulting addresses can be converted 
+into function names by using the binutils 'addr2line' tool.  Looking up the
+addresses in the symbol file, produced via fromElf, is also possible, as is
+using a debugger or any other tool you may have to hand.  For example, I made 
+a small program callled addr2sym which serves a similar purpose to addr2line, 
+but formats output in a similar manner to the stack result.  Processing the
+above stack trace gives the following output:
+
+$ addr2sym unwind.axf 0x0000ac4c 0x0000acc4 0x0000ad20 0x0000ad20 0x0000ad2
+0 0x0000ad20  0x0000ae56 0x0000ae70 0x0000ae04 0x0000ae20 0x0000b420 0xe800e800
+0: 0x0000ac4c: tailCall() + 0xc
+1: 0x0000acc4: testStackResize() + 0x48
+2: 0x0000ad20: testRecurse() + 0x18
+3: 0x0000ad20: testRecurse() + 0x18
+4: 0x0000ad20: testRecurse() + 0x18
+5: 0x0000ad20: testRecurse() + 0x18
+6: 0x0000ae56: testThumb1() + 0x11
+7: 0x0000ae70: testThumb() + 0x13
+8: 0x0000ae04: testPrintf() + 0x1c
+9: 0x0000ae20: main() + 0x8
+a: 0x0000b420: __rt_entry() + 0x3c
+
+
+Moving to a Target
+==================
+
+If you have a target and wish to use the unwinder on it, you will probably 
+need to modify the client code to display the unwind information in a way
+more suitable to an embedded target; for example to a display or via a
+serial port.  Building without UNW_DEBUG is advised, as the debug strings
+will consume a lot of ROM and are only really of interest if unwinding does
+not correctly handle some situation that needs investigating.
+
+
+Changelog
+=========
+
+12/07/2007: Correct instruction decoding error.
+            Add new stop cause to catch jump through zero.
+21/01/2006: Initial revision.
+
+
+Michael McTernan
+Michael.McTernan.2001@cs.bris.ac.uk
+
+END OF FILE

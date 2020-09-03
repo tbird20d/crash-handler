@@ -1,0 +1,1285 @@
+
+========================================================================
+
+** ELF Header Information
+
+    File Name: unwind.axf
+
+    Machine class: ELFCLASS32 (32-bit)
+    Data encoding: ELFDATA2LSB (Little endian)
+    Header version: EV_CURRENT (Current version)
+    Operating System ABI: none
+    ABI Version: 0
+    File Type: ET_EXEC (Executable) (2)
+    Machine: EM_ARM (ARM)
+
+    Image Entry point: 0x00008000
+    Flags: EF_ARM_HASENTRY + EF_ARM_SYMSARESORTED + EF_ARM_MAPSYMSFIRST (0x04000016)
+
+    ABI conformance : ABI for the ARM Architecture v1.0
+
+    Built with
+    ARM/Thumb Macro Assembler, RVCT2.2 [Build 503]
+    ARM Linker, RVCT2.2 [Build 503] 
+    ARM/Thumb C/C++ Compiler, RVCT2.2 [Build 559]
+    ARM/Thumb Macro Assembler, RVCT2.2 [Build 503]
+    ARM/Thumb C/C++ Compiler, RVCT2.2 [Build 503]
+    ARM Linker, RVCT2.2 [Build 559] 
+
+    Header size: 52 bytes (0x34)
+    Program header entry size: 32 bytes (0x20)
+    Section header entry size: 40 bytes (0x28)
+
+    Program header entries: 1
+    Section header entries: 10
+
+    Program header offset: 93848 (0x00016e98)
+    Section header offset: 93880 (0x00016eb8)
+
+    Section header string table index: 9
+
+========================================================================
+
+** Program header #0 (PT_LOAD) [PF_X + PF_W + PF_R + PF_ARM_ENTRY]
+    Size : 26020 bytes (25720 bytes in file)
+    Virtual address: 0x00008000
+
+
+========================================================================
+
+** Section #1 'ER_RO' (SHT_PROGBITS) [SHF_ALLOC + SHF_EXECINSTR]
+    Size   : 25712 bytes (alignment 4)
+    Address: 0x00008000
+
+
+** Section #2 'ER_RW' (SHT_PROGBITS) [SHF_ALLOC + SHF_WRITE]
+    Size   : 8 bytes (alignment 4)
+    Address: 0x0000e470
+
+
+** Section #3 'ER_ZI' (SHT_NOBITS) [SHF_ALLOC + SHF_WRITE]
+    Size   : 300 bytes (alignment 4)
+    Address: 0x0000e478
+
+
+** Section #4 '.debug_frame' (SHT_PROGBITS)
+    Size   : 6700 bytes
+
+
+** Section #5 '.symtab' (SHT_SYMTAB)
+    Size   : 18800 bytes (alignment 4)
+    String table '.strtab'
+    Last local symbol no. 921
+
+    Symbol table .symtab (1174 symbols, 921 local)
+
+      #  Symbol Name                Value      Bind  Sec  Type  Vis  Size
+    ========================================================================
+
+      1  $m                         0x00000253   Lc  Abs   --   De 
+      2  $a                         0x00008000   Lc    1   --   De 
+      3  $a                         0x00008008   Lc    1   --   De 
+      4  $d                         0x00008038   Lc    1   --   De 
+      5  $a                         0x00008040   Lc    1   --   De 
+      6  $t                         0x0000806c   Lc    1   --   De 
+      7  $a                         0x00008070   Lc    1   --   De 
+      8  $d                         0x0000807c   Lc    1   --   De 
+      9  $f                         0x0000807c   Lc    1   --   De 
+     10  $a                         0x00008080   Lc    1   --   De 
+     11  $a                         0x000080c4   Lc    1   --   De 
+     12  $p                         0x00008160   Lc    1   --   De 
+     13  $p                         0x00008184   Lc    1   --   De 
+     14  $p                         0x00008214   Lc    1   --   De 
+     15  $d                         0x00008238   Lc    1   --   De 
+     16  $a                         0x00008258   Lc    1   --   De 
+     17  $p                         0x000082a0   Lc    1   --   De 
+     18  $p                         0x000082d8   Lc    1   --   De 
+     19  $p                         0x000082f8   Lc    1   --   De 
+     20  $p                         0x0000832c   Lc    1   --   De 
+     21  $p                         0x000083dc   Lc    1   --   De 
+     22  $p                         0x00008440   Lc    1   --   De 
+     23  $p                         0x0000848c   Lc    1   --   De 
+     24  $p                         0x00008550   Lc    1   --   De 
+     25  $p                         0x000085a8   Lc    1   --   De 
+     26  $d                         0x000085d0   Lc    1   --   De 
+     27  $a                         0x000086ac   Lc    1   --   De 
+     28  $p                         0x000086c4   Lc    1   --   De 
+     29  $p                         0x000087cc   Lc    1   --   De 
+     30  $p                         0x000087f4   Lc    1   --   De 
+     31  $p                         0x00008838   Lc    1   --   De 
+     32  $p                         0x0000887c   Lc    1   --   De 
+     33  $p                         0x0000896c   Lc    1   --   De 
+     34  $p                         0x00008994   Lc    1   --   De 
+     35  $d                         0x0000899c   Lc    1   --   De 
+     36  $a                         0x00008a20   Lc    1   --   De 
+     37  $p                         0x00008a38   Lc    1   --   De 
+     38  $p                         0x00008a7c   Lc    1   --   De 
+     39  $p                         0x00008d30   Lc    1   --   De 
+     40  $d                         0x00008d3c   Lc    1   --   De 
+     41  $a                         0x00008d94   Lc    1   --   De 
+     42  $p                         0x00008e08   Lc    1   --   De 
+     43  $p                         0x00008e40   Lc    1   --   De 
+     44  $p                         0x00008e84   Lc    1   --   De 
+     45  $p                         0x00008eb8   Lc    1   --   De 
+     46  $p                         0x00008ee0   Lc    1   --   De 
+     47  $p                         0x00008f5c   Lc    1   --   De 
+     48  $p                         0x00008fa0   Lc    1   --   De 
+     49  $p                         0x00008ff4   Lc    1   --   De 
+     50  $p                         0x0000901c   Lc    1   --   De 
+     51  $p                         0x0000907c   Lc    1   --   De 
+     52  $p                         0x000090e8   Lc    1   --   De 
+     53  $d                         0x00009124   Lc    1   --   De 
+     54  $a                         0x0000920c   Lc    1   --   De 
+     55  $p                         0x00009228   Lc    1   --   De 
+     56  $p                         0x00009250   Lc    1   --   De 
+     57  $p                         0x00009288   Lc    1   --   De 
+     58  $p                         0x000092cc   Lc    1   --   De 
+     59  $p                         0x00009304   Lc    1   --   De 
+     60  $p                         0x00009374   Lc    1   --   De 
+     61  $p                         0x000093e4   Lc    1   --   De 
+     62  $p                         0x0000940c   Lc    1   --   De 
+     63  $p                         0x00009424   Lc    1   --   De 
+     64  $p                         0x00009440   Lc    1   --   De 
+     65  $d                         0x00009498   Lc    1   --   De 
+     66  $a                         0x00009558   Lc    1   --   De 
+     67  $p                         0x000095d4   Lc    1   --   De 
+     68  $p                         0x0000960c   Lc    1   --   De 
+     69  $p                         0x0000962c   Lc    1   --   De 
+     70  $p                         0x00009660   Lc    1   --   De 
+     71  $p                         0x000096b8   Lc    1   --   De 
+     72  $p                         0x000096d8   Lc    1   --   De 
+     73  $p                         0x0000970c   Lc    1   --   De 
+     74  $p                         0x00009788   Lc    1   --   De 
+     75  $p                         0x000097f0   Lc    1   --   De 
+     76  $p                         0x00009844   Lc    1   --   De 
+     77  $d                         0x0000984c   Lc    1   --   De 
+     78  $a                         0x0000994c   Lc    1   --   De 
+     79  $p                         0x00009a10   Lc    1   --   De 
+     80  $p                         0x00009a44   Lc    1   --   De 
+     81  $p                         0x00009a78   Lc    1   --   De 
+     82  $p                         0x00009aac   Lc    1   --   De 
+     83  $p                         0x00009ae0   Lc    1   --   De 
+     84  $p                         0x00009b14   Lc    1   --   De 
+     85  $p                         0x00009b48   Lc    1   --   De 
+     86  $p                         0x00009b7c   Lc    1   --   De 
+     87  $p                         0x00009bac   Lc    1   --   De 
+     88  $p                         0x00009bdc   Lc    1   --   De 
+     89  $p                         0x00009c0c   Lc    1   --   De 
+     90  $p                         0x00009c3c   Lc    1   --   De 
+     91  $p                         0x00009c6c   Lc    1   --   De 
+     92  $p                         0x00009c9c   Lc    1   --   De 
+     93  $p                         0x00009cd0   Lc    1   --   De 
+     94  $d                         0x00009cd8   Lc    1   --   De 
+     95  $a                         0x00009db4   Lc    1   --   De 
+     96  $p                         0x00009ddc   Lc    1   --   De 
+     97  $p                         0x00009e20   Lc    1   --   De 
+     98  $p                         0x00009e64   Lc    1   --   De 
+     99  $p                         0x00009e90   Lc    1   --   De 
+    100  $p                         0x00009eb4   Lc    1   --   De 
+    101  $p                         0x00009f20   Lc    1   --   De 
+    102  $p                         0x00009f5c   Lc    1   --   De 
+    103  $p                         0x00009f90   Lc    1   --   De 
+    104  $p                         0x0000a07c   Lc    1   --   De 
+    105  $d                         0x0000a104   Lc    1   --   De 
+    106  $a                         0x0000a1c4   Lc    1   --   De 
+    107  $p                         0x0000a2d4   Lc    1   --   De 
+    108  $p                         0x0000a43c   Lc    1   --   De 
+    109  $p                         0x0000a4b0   Lc    1   --   De 
+    110  $p                         0x0000a4e0   Lc    1   --   De 
+    111  $p                         0x0000a504   Lc    1   --   De 
+    112  $p                         0x0000a528   Lc    1   --   De 
+    113  $d                         0x0000a5b0   Lc    1   --   De 
+    114  $a                         0x0000a66c   Lc    1   --   De 
+    115  $p                         0x0000a6c0   Lc    1   --   De 
+    116  $p                         0x0000a6e8   Lc    1   --   De 
+    117  $p                         0x0000a730   Lc    1   --   De 
+    118  $p                         0x0000a7bc   Lc    1   --   De 
+    119  $p                         0x0000a7f8   Lc    1   --   De 
+    120  $p                         0x0000a830   Lc    1   --   De 
+    121  $p                         0x0000a84c   Lc    1   --   De 
+    122  $d                         0x0000a8b0   Lc    1   --   De 
+    123  $a                         0x0000a924   Lc    1   --   De 
+    124  $p                         0x0000ab1c   Lc    1   --   De 
+    125  $d                         0x0000ab44   Lc    1   --   De 
+    126  $a                         0x0000ab70   Lc    1   --   De 
+    127  $p                         0x0000acc0   Lc    1   --   De 
+    128  $d                         0x0000ad80   Lc    1   --   De 
+    129  $a                         0x0000ade8   Lc    1   --   De 
+    130  $d                         0x0000ae2c   Lc    1   --   De 
+    131  $a                         0x0000ae3c   Lc    1   --   De 
+    132  $t                         0x0000ae44   Lc    1   --   De 
+    133  $b                         0x0000ae4c   Lc    1   --   De 
+    134  $b                         0x0000ae52   Lc    1   --   De 
+    135  $b                         0x0000ae66   Lc    1   --   De 
+    136  $b                         0x0000ae6c   Lc    1   --   De 
+    137  $d                         0x0000ae72   Lc    1   --   De 
+    138  $a                         0x0000ae88   Lc    1   --   De 
+    139  $d                         0x0000af18   Lc    1   --   De 
+    140  $t                         0x0000af30   Lc    1   --   De 
+    141  $b                         0x0000af4c   Lc    1   --   De 
+    142  $b                         0x0000af74   Lc    1   --   De 
+    143  $t                         0x0000af84   Lc    1   --   De 
+    144  $b                         0x0000afc0   Lc    1   --   De 
+    145  $b                         0x0000afcc   Lc    1   --   De 
+    146  $b                         0x0000afd8   Lc    1   --   De 
+    147  $t                         0x0000afe4   Lc    1   --   De 
+    148  $b                         0x0000b00a   Lc    1   --   De 
+    149  $b                         0x0000b034   Lc    1   --   De 
+    150  $b                         0x0000b080   Lc    1   --   De 
+    151  $b                         0x0000b092   Lc    1   --   De 
+    152  $d                         0x0000b09e   Lc    1   --   De 
+    153  $t                         0x0000b0b4   Lc    1   --   De 
+    154  $b                         0x0000b0c6   Lc    1   --   De 
+    155  $b                         0x0000b0ec   Lc    1   --   De 
+    156  $b                         0x0000b0f6   Lc    1   --   De 
+    157  $b                         0x0000b110   Lc    1   --   De 
+    158  $d                         0x0000b11c   Lc    1   --   De 
+    159  $t                         0x0000b12c   Lc    1   --   De 
+    160  $b                         0x0000b13a   Lc    1   --   De 
+    161  $b                         0x0000b142   Lc    1   --   De 
+    162  $d                         0x0000b15a   Lc    1   --   De 
+    163  $f                         0x0000b160   Lc    1   --   De 
+    164  $a                         0x0000b164   Lc    1   --   De 
+    165  $t                         0x0000b16c   Lc    1   --   De 
+    166  $b                         0x0000b176   Lc    1   --   De 
+    167  $b                         0x0000b17e   Lc    1   --   De 
+    168  $d                         0x0000b194   Lc    1   --   De 
+    169  $f                         0x0000b198   Lc    1   --   De 
+    170  $a                         0x0000b19c   Lc    1   --   De 
+    171  $t                         0x0000b1a4   Lc    1   --   De 
+    172  $b                         0x0000b1b2   Lc    1   --   De 
+    173  $b                         0x0000b1ba   Lc    1   --   De 
+    174  $d                         0x0000b1d2   Lc    1   --   De 
+    175  $f                         0x0000b1d8   Lc    1   --   De 
+    176  $a                         0x0000b1dc   Lc    1   --   De 
+    177  $t                         0x0000b1e4   Lc    1   --   De 
+    178  $b                         0x0000b1f4   Lc    1   --   De 
+    179  $b                         0x0000b1fe   Lc    1   --   De 
+    180  $d                         0x0000b20c   Lc    1   --   De 
+    181  $f                         0x0000b20c   Lc    1   --   De 
+    182  $a                         0x0000b210   Lc    1   --   De 
+    183  $t                         0x0000b27c   Lc    1   --   De 
+    184  $a                         0x0000b280   Lc    1   --   De 
+    185  $a                         0x0000b3e4   Lc    1   --   De 
+    186  $b                         0x0000b428   Lc    1   --   De 
+    187  $t                         0x0000b428   Lc    1   --   De 
+    188  $d                         0x0000b42c   Lc    1   --   De 
+    189  $f                         0x0000b42c   Lc    1   --   De 
+    190  $a                         0x0000b430   Lc    1   --   De 
+    191  $a                         0x0000b44c   Lc    1   --   De 
+    192  $t                         0x0000b450   Lc    1   --   De 
+    193  $t                         0x0000b47c   Lc    1   --   De 
+    194  $b                         0x0000b49e   Lc    1   --   De 
+    195  $b                         0x0000b4da   Lc    1   --   De 
+    196  $b                         0x0000b4f8   Lc    1   --   De 
+    197  $b                         0x0000b50e   Lc    1   --   De 
+    198  $b                         0x0000b52c   Lc    1   --   De 
+    199  $d                         0x0000b538   Lc    1   --   De 
+    200  $t                         0x0000b53c   Lc    1   --   De 
+    201  $b                         0x0000b574   Lc    1   --   De 
+    202  $b                         0x0000b584   Lc    1   --   De 
+    203  $b                         0x0000b59e   Lc    1   --   De 
+    204  $b                         0x0000b5aa   Lc    1   --   De 
+    205  $b                         0x0000b5c6   Lc    1   --   De 
+    206  $b                         0x0000b5da   Lc    1   --   De 
+    207  $t                         0x0000b5e8   Lc    1   --   De 
+    208  $b                         0x0000b5fe   Lc    1   --   De 
+    209  $b                         0x0000b620   Lc    1   --   De 
+    210  $b                         0x0000b658   Lc    1   --   De 
+    211  $b                         0x0000b66a   Lc    1   --   De 
+    212  $d                         0x0000b676   Lc    1   --   De 
+    213  $t                         0x0000b680   Lc    1   --   De 
+    214  $b                         0x0000b69c   Lc    1   --   De 
+    215  $b                         0x0000b6a6   Lc    1   --   De 
+    216  $b                         0x0000b6d0   Lc    1   --   De 
+    217  $b                         0x0000b6ea   Lc    1   --   De 
+    218  $b                         0x0000b6fc   Lc    1   --   De 
+    219  $d                         0x0000b708   Lc    1   --   De 
+    220  $t                         0x0000b718   Lc    1   --   De 
+    221  $t                         0x0000b73c   Lc    1   --   De 
+    222  $b                         0x0000b75c   Lc    1   --   De 
+    223  $d                         0x0000b766   Lc    1   --   De 
+    224  $f                         0x0000b768   Lc    1   --   De 
+    225  $f                         0x0000b76c   Lc    1   --   De 
+    226  $t                         0x0000b770   Lc    1   --   De 
+    227  $t                         0x0000b77a   Lc    1   --   De 
+    228  $b                         0x0000b784   Lc    1   --   De 
+    229  $b                         0x0000b790   Lc    1   --   De 
+    230  $t                         0x0000b79c   Lc    1   --   De 
+    231  $b                         0x0000b7a6   Lc    1   --   De 
+    232  $t                         0x0000b7c4   Lc    1   --   De 
+    233  $b                         0x0000b7ce   Lc    1   --   De 
+    234  $b                         0x0000b7ea   Lc    1   --   De 
+    235  $b                         0x0000b80a   Lc    1   --   De 
+    236  $b                         0x0000b824   Lc    1   --   De 
+    237  $b                         0x0000b844   Lc    1   --   De 
+    238  $b                         0x0000b862   Lc    1   --   De 
+    239  $b                         0x0000b884   Lc    1   --   De 
+    240  $b                         0x0000b890   Lc    1   --   De 
+    241  $b                         0x0000b8d8   Lc    1   --   De 
+    242  $b                         0x0000b914   Lc    1   --   De 
+    243  $b                         0x0000b962   Lc    1   --   De 
+    244  $b                         0x0000b968   Lc    1   --   De 
+    245  $b                         0x0000b97a   Lc    1   --   De 
+    246  $b                         0x0000b988   Lc    1   --   De 
+    247  $b                         0x0000b992   Lc    1   --   De 
+    248  $b                         0x0000b9ac   Lc    1   --   De 
+    249  $b                         0x0000b9b2   Lc    1   --   De 
+    250  $b                         0x0000b9ba   Lc    1   --   De 
+    251  $b                         0x0000b9d2   Lc    1   --   De 
+    252  $b                         0x0000b9d8   Lc    1   --   De 
+    253  $b                         0x0000ba2c   Lc    1   --   De 
+    254  $b                         0x0000ba5c   Lc    1   --   De 
+    255  $b                         0x0000ba62   Lc    1   --   De 
+    256  $b                         0x0000ba7c   Lc    1   --   De 
+    257  $b                         0x0000ba98   Lc    1   --   De 
+    258  $b                         0x0000baa2   Lc    1   --   De 
+    259  $b                         0x0000bab0   Lc    1   --   De 
+    260  $b                         0x0000bac8   Lc    1   --   De 
+    261  $b                         0x0000bad0   Lc    1   --   De 
+    262  $b                         0x0000bae0   Lc    1   --   De 
+    263  $b                         0x0000baea   Lc    1   --   De 
+    264  $b                         0x0000baf4   Lc    1   --   De 
+    265  $b                         0x0000bb0a   Lc    1   --   De 
+    266  $b                         0x0000bb20   Lc    1   --   De 
+    267  $b                         0x0000bb32   Lc    1   --   De 
+    268  $b                         0x0000bb42   Lc    1   --   De 
+    269  $b                         0x0000bb4e   Lc    1   --   De 
+    270  $b                         0x0000bb5e   Lc    1   --   De 
+    271  $b                         0x0000bb6c   Lc    1   --   De 
+    272  $b                         0x0000bb7c   Lc    1   --   De 
+    273  $b                         0x0000bb8a   Lc    1   --   De 
+    274  $b                         0x0000bb9a   Lc    1   --   De 
+    275  $b                         0x0000bbaa   Lc    1   --   De 
+    276  $b                         0x0000bbba   Lc    1   --   De 
+    277  $b                         0x0000bbc8   Lc    1   --   De 
+    278  $b                         0x0000bbd8   Lc    1   --   De 
+    279  $b                         0x0000bbe6   Lc    1   --   De 
+    280  $d                         0x0000bbf0   Lc    1   --   De 
+    281  $t                         0x0000bc1c   Lc    1   --   De 
+    282  $b                         0x0000bc22   Lc    1   --   De 
+    283  $b                         0x0000bc32   Lc    1   --   De 
+    284  $b                         0x0000bc3a   Lc    1   --   De 
+    285  $b                         0x0000bc42   Lc    1   --   De 
+    286  $b                         0x0000bc48   Lc    1   --   De 
+    287  $b                         0x0000bc52   Lc    1   --   De 
+    288  $b                         0x0000bc58   Lc    1   --   De 
+    289  $b                         0x0000bc64   Lc    1   --   De 
+    290  $d                         0x0000bc6a   Lc    1   --   De 
+    291  $t                         0x0000bc78   Lc    1   --   De 
+    292  $a                         0x0000bc7c   Lc    1   --   De 
+    293  $t                         0x0000bca8   Lc    1   --   De 
+    294  $a                         0x0000bcac   Lc    1   --   De 
+    295  $t                         0x0000bcb8   Lc    1   --   De 
+    296  $t                         0x0000bcc8   Lc    1   --   De 
+    297  $b                         0x0000bcce   Lc    1   --   De 
+    298  $t                         0x0000bd44   Lc    1   --   De 
+    299  $a                         0x0000bd48   Lc    1   --   De 
+    300  $d                         0x0000bd58   Lc    1   --   De 
+    301  $f                         0x0000bd58   Lc    1   --   De 
+    302  $t                         0x0000bd60   Lc    1   --   De 
+    303  $a                         0x0000bd64   Lc    1   --   De 
+    304  $a                         0x0000bd6c   Lc    1   --   De 
+    305  $t                         0x0000bd78   Lc    1   --   De 
+    306  $a                         0x0000bd7c   Lc    1   --   De 
+    307  $t                         0x0000bd98   Lc    1   --   De 
+    308  $b                         0x0000bda4   Lc    1   --   De 
+    309  $b                         0x0000bdb2   Lc    1   --   De 
+    310  $b                         0x0000bdcc   Lc    1   --   De 
+    311  $b                         0x0000bde0   Lc    1   --   De 
+    312  $b                         0x0000bdf0   Lc    1   --   De 
+    313  $b                         0x0000bdfc   Lc    1   --   De 
+    314  $b                         0x0000be0a   Lc    1   --   De 
+    315  $b                         0x0000be1c   Lc    1   --   De 
+    316  $b                         0x0000be2a   Lc    1   --   De 
+    317  $b                         0x0000be38   Lc    1   --   De 
+    318  $b                         0x0000be40   Lc    1   --   De 
+    319  $t                         0x0000be4a   Lc    1   --   De 
+    320  $b                         0x0000be52   Lc    1   --   De 
+    321  $b                         0x0000be5a   Lc    1   --   De 
+    322  $t                         0x0000be68   Lc    1   --   De 
+    323  $a                         0x0000be6c   Lc    1   --   De 
+    324  $t                         0x0000bf0c   Lc    1   --   De 
+    325  $b                         0x0000bf2c   Lc    1   --   De 
+    326  $b                         0x0000bf46   Lc    1   --   De 
+    327  $b                         0x0000bf58   Lc    1   --   De 
+    328  $b                         0x0000bf8a   Lc    1   --   De 
+    329  $b                         0x0000bfc4   Lc    1   --   De 
+    330  $b                         0x0000bfdc   Lc    1   --   De 
+    331  $b                         0x0000c016   Lc    1   --   De 
+    332  $b                         0x0000c05c   Lc    1   --   De 
+    333  $b                         0x0000c0be   Lc    1   --   De 
+    334  $b                         0x0000c100   Lc    1   --   De 
+    335  $b                         0x0000c108   Lc    1   --   De 
+    336  $b                         0x0000c118   Lc    1   --   De 
+    337  $b                         0x0000c120   Lc    1   --   De 
+    338  $b                         0x0000c138   Lc    1   --   De 
+    339  $b                         0x0000c164   Lc    1   --   De 
+    340  $b                         0x0000c182   Lc    1   --   De 
+    341  $b                         0x0000c19c   Lc    1   --   De 
+    342  $b                         0x0000c1a8   Lc    1   --   De 
+    343  $b                         0x0000c1c6   Lc    1   --   De 
+    344  $b                         0x0000c1e4   Lc    1   --   De 
+    345  $d                         0x0000c1f4   Lc    1   --   De 
+    346  $t                         0x0000c1f8   Lc    1   --   De 
+    347  $b                         0x0000c20a   Lc    1   --   De 
+    348  $b                         0x0000c214   Lc    1   --   De 
+    349  $b                         0x0000c2b6   Lc    1   --   De 
+    350  $b                         0x0000c2be   Lc    1   --   De 
+    351  $b                         0x0000c2de   Lc    1   --   De 
+    352  $b                         0x0000c2ee   Lc    1   --   De 
+    353  $b                         0x0000c316   Lc    1   --   De 
+    354  $b                         0x0000c334   Lc    1   --   De 
+    355  $b                         0x0000c37e   Lc    1   --   De 
+    356  $b                         0x0000c394   Lc    1   --   De 
+    357  $b                         0x0000c3a2   Lc    1   --   De 
+    358  $b                         0x0000c3fa   Lc    1   --   De 
+    359  $b                         0x0000c40a   Lc    1   --   De 
+    360  $b                         0x0000c432   Lc    1   --   De 
+    361  $b                         0x0000c440   Lc    1   --   De 
+    362  $b                         0x0000c4be   Lc    1   --   De 
+    363  $b                         0x0000c5ec   Lc    1   --   De 
+    364  $d                         0x0000c66a   Lc    1   --   De 
+    365  $t                         0x0000c698   Lc    1   --   De 
+    366  $b                         0x0000c70c   Lc    1   --   De 
+    367  $b                         0x0000c73e   Lc    1   --   De 
+    368  $b                         0x0000c762   Lc    1   --   De 
+    369  $b                         0x0000c79a   Lc    1   --   De 
+    370  $b                         0x0000c7aa   Lc    1   --   De 
+    371  $b                         0x0000c7bc   Lc    1   --   De 
+    372  $b                         0x0000c7de   Lc    1   --   De 
+    373  $b                         0x0000c7f6   Lc    1   --   De 
+    374  $b                         0x0000c810   Lc    1   --   De 
+    375  $b                         0x0000c822   Lc    1   --   De 
+    376  $t                         0x0000c82a   Lc    1   --   De 
+    377  $b                         0x0000c83c   Lc    1   --   De 
+    378  $t                         0x0000c84a   Lc    1   --   De 
+    379  $t                         0x0000c854   Lc    1   --   De 
+    380  $b                         0x0000c864   Lc    1   --   De 
+    381  $b                         0x0000c886   Lc    1   --   De 
+    382  $b                         0x0000c896   Lc    1   --   De 
+    383  $b                         0x0000c8a2   Lc    1   --   De 
+    384  $b                         0x0000c8b0   Lc    1   --   De 
+    385  $b                         0x0000c8c6   Lc    1   --   De 
+    386  $b                         0x0000c8d0   Lc    1   --   De 
+    387  $b                         0x0000c8e0   Lc    1   --   De 
+    388  $b                         0x0000c8f2   Lc    1   --   De 
+    389  $d                         0x0000c8fe   Lc    1   --   De 
+    390  $t                         0x0000c908   Lc    1   --   De 
+    391  $b                         0x0000c91e   Lc    1   --   De 
+    392  $b                         0x0000c980   Lc    1   --   De 
+    393  $b                         0x0000c9b4   Lc    1   --   De 
+    394  $b                         0x0000c9ce   Lc    1   --   De 
+    395  $b                         0x0000c9da   Lc    1   --   De 
+    396  $b                         0x0000c9fa   Lc    1   --   De 
+    397  $b                         0x0000ca10   Lc    1   --   De 
+    398  $b                         0x0000ca34   Lc    1   --   De 
+    399  $b                         0x0000ca6c   Lc    1   --   De 
+    400  $b                         0x0000cb18   Lc    1   --   De 
+    401  $b                         0x0000cb5e   Lc    1   --   De 
+    402  $d                         0x0000cb6c   Lc    1   --   De 
+    403  $t                         0x0000cb78   Lc    1   --   De 
+    404  $b                         0x0000cb8c   Lc    1   --   De 
+    405  $b                         0x0000cba6   Lc    1   --   De 
+    406  $b                         0x0000cbb8   Lc    1   --   De 
+    407  $b                         0x0000ccc4   Lc    1   --   De 
+    408  $b                         0x0000ccce   Lc    1   --   De 
+    409  $b                         0x0000ccd6   Lc    1   --   De 
+    410  $d                         0x0000ccde   Lc    1   --   De 
+    411  $t                         0x0000cce4   Lc    1   --   De 
+    412  $b                         0x0000ccf6   Lc    1   --   De 
+    413  $b                         0x0000cd44   Lc    1   --   De 
+    414  $d                         0x0000cd62   Lc    1   --   De 
+    415  $t                         0x0000cd68   Lc    1   --   De 
+    416  $b                         0x0000cd70   Lc    1   --   De 
+    417  $b                         0x0000cd92   Lc    1   --   De 
+    418  $t                         0x0000cdb2   Lc    1   --   De 
+    419  $b                         0x0000cdb6   Lc    1   --   De 
+    420  $b                         0x0000cdbc   Lc    1   --   De 
+    421  $t                         0x0000cdc8   Lc    1   --   De 
+    422  $b                         0x0000cdce   Lc    1   --   De 
+    423  $b                         0x0000cdd4   Lc    1   --   De 
+    424  $d                         0x0000cdde   Lc    1   --   De 
+    425  $t                         0x0000cde4   Lc    1   --   De 
+    426  $a                         0x0000cde8   Lc    1   --   De 
+    427  $a                         0x0000ce40   Lc    1   --   De 
+    428  $a                         0x0000cf44   Lc    1   --   De 
+    429  $t                         0x0000cf4c   Lc    1   --   De 
+    430  $b                         0x0000cf54   Lc    1   --   De 
+    431  $b                         0x0000cf5e   Lc    1   --   De 
+    432  $b                         0x0000cf66   Lc    1   --   De 
+    433  $b                         0x0000cf76   Lc    1   --   De 
+    434  $b                         0x0000cf7a   Lc    1   --   De 
+    435  $b                         0x0000cf7e   Lc    1   --   De 
+    436  $b                         0x0000cf86   Lc    1   --   De 
+    437  $b                         0x0000cf8c   Lc    1   --   De 
+    438  $b                         0x0000cf98   Lc    1   --   De 
+    439  $b                         0x0000cfa6   Lc    1   --   De 
+    440  $b                         0x0000cfb4   Lc    1   --   De 
+    441  $b                         0x0000cfc2   Lc    1   --   De 
+    442  $b                         0x0000cfcc   Lc    1   --   De 
+    443  $b                         0x0000cfd0   Lc    1   --   De 
+    444  $b                         0x0000cfd4   Lc    1   --   De 
+    445  $b                         0x0000cfd8   Lc    1   --   De 
+    446  $b                         0x0000cfdc   Lc    1   --   De 
+    447  $b                         0x0000cfe0   Lc    1   --   De 
+    448  $b                         0x0000cfe4   Lc    1   --   De 
+    449  $b                         0x0000cfe8   Lc    1   --   De 
+    450  $b                         0x0000cfec   Lc    1   --   De 
+    451  $b                         0x0000d008   Lc    1   --   De 
+    452  $b                         0x0000d00c   Lc    1   --   De 
+    453  $b                         0x0000d010   Lc    1   --   De 
+    454  $a                         0x0000d01c   Lc    1   --   De 
+    455  $a                         0x0000d020   Lc    1   --   De 
+    456  $a                         0x0000d02c   Lc    1   --   De 
+    457  $a                         0x0000d03c   Lc    1   --   De 
+    458  $t                         0x0000d040   Lc    1   --   De 
+    459  $a                         0x0000d044   Lc    1   --   De 
+    460  $t                         0x0000d050   Lc    1   --   De 
+    461  $a                         0x0000d054   Lc    1   --   De 
+    462  $a                         0x0000d060   Lc    1   --   De 
+    463  $d                         0x0000d0a8   Lc    1   --   De 
+    464  $f                         0x0000d0a8   Lc    1   --   De 
+    465  $t                         0x0000d0b0   Lc    1   --   De 
+    466  $a                         0x0000d0b4   Lc    1   --   De 
+    467  $d                         0x0000d0bc   Lc    1   --   De 
+    468  $a                         0x0000d0c0   Lc    1   --   De 
+    469  $t                         0x0000d0c4   Lc    1   --   De 
+    470  $a                         0x0000d0c8   Lc    1   --   De 
+    471  $d                         0x0000d0dc   Lc    1   --   De 
+    472  $f                         0x0000d0dc   Lc    1   --   De 
+    473  $t                         0x0000d0e0   Lc    1   --   De 
+    474  $t                         0x0000d0e4   Lc    1   --   De 
+    475  $b                         0x0000d14c   Lc    1   --   De 
+    476  $b                         0x0000d15c   Lc    1   --   De 
+    477  $t                         0x0000d160   Lc    1   --   De 
+    478  $b                         0x0000d1a0   Lc    1   --   De 
+    479  $t                         0x0000d1a4   Lc    1   --   De 
+    480  $b                         0x0000d1d0   Lc    1   --   De 
+    481  $t                         0x0000d1dc   Lc    1   --   De 
+    482  $b                         0x0000d200   Lc    1   --   De 
+    483  $b                         0x0000d230   Lc    1   --   De 
+    484  $b                         0x0000d26e   Lc    1   --   De 
+    485  $b                         0x0000d28a   Lc    1   --   De 
+    486  $b                         0x0000d296   Lc    1   --   De 
+    487  $d                         0x0000d2a6   Lc    1   --   De 
+    488  $t                         0x0000d2ac   Lc    1   --   De 
+    489  $b                         0x0000d2b6   Lc    1   --   De 
+    490  $t                         0x0000d2d0   Lc    1   --   De 
+    491  $b                         0x0000d2de   Lc    1   --   De 
+    492  $d                         0x0000d2f4   Lc    1   --   De 
+    493  $a                         0x0000d2fc   Lc    1   --   De 
+    494  $t                         0x0000d304   Lc    1   --   De 
+    495  $b                         0x0000d310   Lc    1   --   De 
+    496  $b                         0x0000d31e   Lc    1   --   De 
+    497  $b                         0x0000d330   Lc    1   --   De 
+    498  $t                         0x0000d338   Lc    1   --   De 
+    499  $d                         0x0000d37c   Lc    1   --   De 
+    500  $t                         0x0000d380   Lc    1   --   De 
+    501  $a                         0x0000d384   Lc    1   --   De 
+    502  $a                         0x0000d394   Lc    1   --   De 
+    503  $t                         0x0000d398   Lc    1   --   De 
+    504  $a                         0x0000d39c   Lc    1   --   De 
+    505  $t                         0x0000d3e0   Lc    1   --   De 
+    506  $a                         0x0000d3e4   Lc    1   --   De 
+    507  $a                         0x0000d45c   Lc    1   --   De 
+    508  $t                         0x0000d470   Lc    1   --   De 
+    509  $b                         0x0000d47e   Lc    1   --   De 
+    510  $d                         0x0000d494   Lc    1   --   De 
+    511  $t                         0x0000d49c   Lc    1   --   De 
+    512  $b                         0x0000d4a2   Lc    1   --   De 
+    513  $b                         0x0000d4a6   Lc    1   --   De 
+    514  $b                         0x0000d4ac   Lc    1   --   De 
+    515  $t                         0x0000d4b8   Lc    1   --   De 
+    516  $b                         0x0000d518   Lc    1   --   De 
+    517  $b                         0x0000d526   Lc    1   --   De 
+    518  $b                         0x0000d532   Lc    1   --   De 
+    519  $d                         0x0000d53e   Lc    1   --   De 
+    520  $t                         0x0000d5c0   Lc    1   --   De 
+    521  $a                         0x0000d5c4   Lc    1   --   De 
+    522  $d                         0x0000d660   Lc    1   --   De 
+    523  $a                         0x0000d664   Lc    1   --   De 
+    524  $d                         0x0000d6a0   Lc    1   --   De 
+    525  $t                         0x0000d6a4   Lc    1   --   De 
+    526  $a                         0x0000d6b4   Lc    1   --   De 
+    527  $t                         0x0000d6d0   Lc    1   --   De 
+    528  $a                         0x0000d6d4   Lc    1   --   De 
+    529  $a                         0x0000d70c   Lc    1   --   De 
+    530  $a                         0x0000d760   Lc    1   --   De 
+    531  $a                         0x0000d7c8   Lc    1   --   De 
+    532  $d                         0x0000da94   Lc    1   --   De 
+    533  $a                         0x0000db14   Lc    1   --   De 
+    534  $t                         0x0000dbf0   Lc    1   --   De 
+    535  $a                         0x0000dbf4   Lc    1   --   De 
+    536  $t                         0x0000dc28   Lc    1   --   De 
+    537  $a                         0x0000dc2c   Lc    1   --   De 
+    538  $a                         0x0000dc60   Lc    1   --   De 
+    539  $a                         0x0000dec8   Lc    1   --   De 
+    540  $d                         0x0000ded0   Lc    1   --   De 
+    541  $f                         0x0000ded0   Lc    1   --   De 
+    542  $t                         0x0000ded4   Lc    1   --   De 
+    543  $a                         0x0000ded8   Lc    1   --   De 
+    544  $t                         0x0000dedc   Lc    1   --   De 
+    545  $a                         0x0000dee0   Lc    1   --   De 
+    546  $a                         0x0000dee4   Lc    1   --   De 
+    547  $d                         0x0000deec   Lc    1   --   De 
+    548  $f                         0x0000deec   Lc    1   --   De 
+    549  $t                         0x0000def0   Lc    1   --   De 
+    550  $a                         0x0000def4   Lc    1   --   De 
+    551  $a                         0x0000def8   Lc    1   --   De 
+    552  $d                         0x0000df00   Lc    1   --   De 
+    553  $f                         0x0000df00   Lc    1   --   De 
+    554  $a                         0x0000df04   Lc    1   --   De 
+    555  $a                         0x0000df08   Lc    1   --   De 
+    556  $d                         0x0000df14   Lc    1   --   De 
+    557  $t                         0x0000df18   Lc    1   --   De 
+    558  $a                         0x0000df1c   Lc    1   --   De 
+    559  $t                         0x0000df34   Lc    1   --   De 
+    560  $a                         0x0000df38   Lc    1   --   De 
+    561  $t                         0x0000df40   Lc    1   --   De 
+    562  $a                         0x0000df44   Lc    1   --   De 
+    563  $t                         0x0000df48   Lc    1   --   De 
+    564  $a                         0x0000df4c   Lc    1   --   De 
+    565  $a                         0x0000df50   Lc    1   --   De 
+    566  $d                         0x0000dfa4   Lc    1   --   De 
+    567  $a                         0x0000dfac   Lc    1   --   De 
+    568  $a                         0x0000e020   Lc    1   --   De 
+    569  $d.realdata                0x0000e05c   Lc    1   --   De 
+    570  $d.realdata                0x0000e09c   Lc    1   --   De 
+    571  $d.realdata                0x0000e0ac   Lc    1   --   De 
+    572  $d.realdata                0x0000e0c0   Lc    1   --   De 
+    573  $f                         0x0000e0c0   Lc    1   --   De 
+    574  $f                         0x0000e0c4   Lc    1   --   De 
+    575  $f                         0x0000e0c8   Lc    1   --   De 
+    576  $f                         0x0000e0cc   Lc    1   --   De 
+    577  $f                         0x0000e0d0   Lc    1   --   De 
+    578  $d.realdata                0x0000e0d4   Lc    1   --   De 
+    579  $d.realdata                0x0000e0f8   Lc    1   --   De 
+    580  $d.realdata                0x0000e0fc   Lc    1   --   De 
+    581  $d.realdata                0x0000e100   Lc    1   --   De 
+    582  $d.realdata                0x0000e104   Lc    1   --   De 
+    583  $d.realdata                0x0000e108   Lc    1   --   De 
+    584  $d.realdata                0x0000e11c   Lc    1   --   De 
+    585  $d.realdata                0x0000e1b0   Lc    1   --   De 
+    586  $d.realdata                0x0000e1b4   Lc    1   --   De 
+    587  $d.realdata                0x0000e1d0   Lc    1   --   De 
+    588  $d.realdata                0x0000e2dd   Lc    1   --   De 
+    589  $d.realdata                0x0000e41f   Lc    1   --   De 
+    590  $d.realdata                0x0000e460   Lc    1   --   De 
+    591  $d.realdata                0x0000e470   Lc    2   --   De 
+    592  $f                         0x0000e470   Lc    2   --   De 
+    593  $d.realdata                0x0000e474   Lc    2   --   De 
+    594  $d.realdata                0x0000e478   Lc    3   --   De 
+    595  $d.realdata                0x0000e544   Lc    3   --   De 
+    596  unwarminder.c              0x00000000   Lc  Abs  File  De 
+    597  .text                      0x00008080   Lc    1  Sect  De   0x44
+    598  unwarm.c                   0x00000000   Lc  Abs  File  De 
+    599  .text                      0x000080c4   Lc    1  Sect  De   0x194
+    600  unwarm_thumb.c             0x00000000   Lc  Abs  File  De 
+    601  .text                      0x00008258   Lc    1  Sect  De   0x1300
+    602  .constdata                 0x0000e05c   Lc    1  Sect  De   0x40
+    603  .conststring               0x0000e41f   Lc    1  Sect  De   0x40
+    604  signExtend11               0x00008258   Lc    1  Code  De   0x18
+    605  |L1.964|                   0x0000861c   Lc    1  Data  De 
+    606  |L1.972|                   0x00008624   Lc    1  Data  De 
+    607  |L1.1888|                  0x000089b8   Lc    1  Data  De 
+    608  .constdata$1               0x0000e05c   Lc    1  Data  De 
+    609  mnu@UnwStartThumb_0        0x0000e05c   Lc    1  Data  De   0x40
+    610  .conststring$3             0x0000e41f   Lc    1  Data  De 
+    611  unwarm_arm.c               0x00000000   Lc  Abs  File  De 
+    612  .text                      0x00009558   Lc    1  Sect  De   0x13cc
+    613  .constdata                 0x0000e09c   Lc    1  Sect  De   0x10
+    614  isDataProc                 0x00009558   Lc    1  Code  De   0x4c
+    615  |L1.836|                   0x0000989c   Lc    1  Data  De 
+    616  |L1.844|                   0x000098a4   Lc    1  Data  De 
+    617  .constdata$1               0x0000e09c   Lc    1  Data  De 
+    618  unwarmmem.c                0x00000000   Lc  Abs  File  De 
+    619  .text                      0x0000a924   Lc    1  Sect  De   0x24c
+    620  memHashIndex               0x0000a924   Lc    1  Code  De   0x88
+    621  simplefunc.c               0x00000000   Lc  Abs  File  De 
+    622  .text                      0x0000ae44   Lc    1  Sect  De   0x44
+    623  .constdata                 0x0000e0ac   Lc    1  Sect  De   0x14
+    624  .text                      0x0000ab70   Lc    1  Sect  De   0x2cc
+    625  .data                      0x0000e470   Lc    2  Sect  De   0x4
+    626  i.__ARM_get_argv           0x0000df04   Lc    1  Sect  De   0x4
+    627  .constdata$1               0x0000e0ac   Lc    1  Data  De 
+    628  .data$0                    0x0000e470   Lc    2  Data  De 
+    629  runFunc                    0x0000e470   Lc    2  Data  De   0x4
+    630  client.c                   0x00000000   Lc  Abs  File  De 
+    631  .text                      0x0000ae88   Lc    1  Sect  De   0xa8
+    632  .constdata                 0x0000e0c0   Lc    1  Sect  De   0x14
+    633  CliReport                  0x0000ae88   Lc    1  Code  De   0x50
+    634  CliReadW                   0x0000aed8   Lc    1  Code  De   0x10
+    635  CliReadH                   0x0000aee8   Lc    1  Code  De   0x10
+    636  CliReadB                   0x0000aef8   Lc    1  Code  De   0x10
+    637  .constdata$7               0x0000e0c0   Lc    1  Data  De 
+    638  dc.s                       0x00000000   Lc  Abs  File  De 
+    639  ../../printf.c             0x00000000   Lc  Abs  File  De 
+    640  .text                      0x0000af30   Lc    1  Sect  De   0x54
+    641  ../../printf.c             0x00000000   Lc  Abs  File  De 
+    642  .text                      0x0000af84   Lc    1  Sect  De   0x5e
+    643  ../../printf.c             0x00000000   Lc  Abs  File  De 
+    644  .text                      0x0000afe4   Lc    1  Sect  De   0xd0
+    645  .constdata                 0x0000e0d4   Lc    1  Sect  De   0x22
+    646  .constdata$1               0x0000e0d4   Lc    1  Data  De 
+    647  lc_hextab@_printf_longlong_hex_0
+                                    0x0000e0d4   Lc    1  Data  De   0x11
+    648  uc_hextab@_printf_longlong_hex_1
+                                    0x0000e0e5   Lc    1  Data  De   0x11
+    649  ../../printf.c             0x00000000   Lc  Abs  File  De 
+    650  .text                      0x0000b0b4   Lc    1  Sect  De   0x78
+    651  ../../printf.c             0x00000000   Lc  Abs  File  De 
+    652  .text                      0x0000b12c   Lc    1  Sect  De   0x38
+    653  ../../printf.c             0x00000000   Lc  Abs  File  De 
+    654  .text                      0x0000b16c   Lc    1  Sect  De   0x30
+    655  ../../printf.c             0x00000000   Lc  Abs  File  De 
+    656  .text                      0x0000b1a4   Lc    1  Sect  De   0x38
+    657  ../../printf.c             0x00000000   Lc  Abs  File  De 
+    658  .text                      0x0000b1e4   Lc    1  Sect  De   0x2c
+    659  ../../memcpset.s           0x00000000   Lc  Abs  File  De 
+    660  .text                      0x0000b210   Lc    1  Sect  De   0x6c
+    661  _memcpy_aligned_loop       0x0000b21c   Lc    1  Code  De 
+    662  _memcpy_small              0x0000b234   Lc    1  Code  De 
+    663  ../../division.s           0x00000000   Lc  Abs  File  De 
+    664  .text_udiv                 0x0000d6b4   Lc    1  Sect  De   0x1c
+    665  .text                      0x0000b280   Lc    1  Sect  De   0x164
+    666  __arm_div8                 0x0000b2ac   Lc    1  Code  De 
+    667  __arm_div4                 0x0000b2dc   Lc    1  Code  De 
+    668  __arm_div1                 0x0000b300   Lc    1  Code  De 
+    669  __arm_div_negative         0x0000b310   Lc    1  Code  De 
+    670  __arm_div_large            0x0000b330   Lc    1  Code  De 
+    671  ../../angel/startup.s      0x00000000   Lc  Abs  File  De 
+    672  !!!main                    0x00008000   Lc    1  Sect  De   0x8
+    673  ../../angel/kernel.s       0x00000000   Lc  Abs  File  De 
+    674  .text                      0x0000b3e4   Lc    1  Sect  De   0x68
+    675  mainaddruse                0x0000b40c   Lc    1  Code  De   0x4
+    676  thumbmainreturn            0x0000b429   Lc    1  Code  De 
+    677  mainaddr                   0x0000b42c   Lc    1  Data  De   0x4
+    678  __rt_abort1                0x0000b448   Lc    1  Code  De 
+    679  ../../angel/rt.s           0x00000000   Lc  Abs  File  De 
+    680  .text                      0x0000b44c   Lc    1  Sect  De   0x4
+    681  ../../printf.c             0x00000000   Lc  Abs  File  De 
+    682  .text                      0x0000b450   Lc    1  Sect  De   0x2c
+    683  ../../printf.c             0x00000000   Lc  Abs  File  De 
+    684  .constdata                 0x0000e0f8   Lc    1  Sect  De   0x4
+    685  .text                      0x0000b47c   Lc    1  Sect  De   0xc0
+    686  .constdata$1               0x0000e0f8   Lc    1  Data  De 
+    687  initial_mbstate@_printf_wctomb_0
+                                    0x0000e0f8   Lc    1  Data  De   0x4
+    688  ../../printf.c             0x00000000   Lc  Abs  File  De 
+    689  .text                      0x0000b53c   Lc    1  Sect  De   0xaa
+    690  ../../printf.c             0x00000000   Lc  Abs  File  De 
+    691  .text                      0x0000b5e8   Lc    1  Sect  De   0x98
+    692  ../../printf.c             0x00000000   Lc  Abs  File  De 
+    693  .text                      0x0000b680   Lc    1  Sect  De   0x98
+    694  ../../printf.c             0x00000000   Lc  Abs  File  De 
+    695  .text                      0x0000b718   Lc    1  Sect  De   0x24
+    696  ../../printf.c             0x00000000   Lc  Abs  File  De 
+    697  .text                      0x0000b73c   Lc    1  Sect  De   0x34
+    698  ../../printf.c             0x00000000   Lc  Abs  File  De 
+    699  .text                      0x0000b770   Lc    1  Sect  De   0xa
+    700  ../../stdio.c              0x00000000   Lc  Abs  File  De 
+    701  .text                      0x0000b77a   Lc    1  Sect  De   0x22
+    702  ../../stdio.c              0x00000000   Lc  Abs  File  De 
+    703  .text                      0x0000b79c   Lc    1  Sect  De   0x26
+    704  ../../stdio.c              0x00000000   Lc  Abs  File  De 
+    705  .bss                       0x0000e478   Lc    3  Sect  De   0xcc
+    706  .text                      0x0000b7c4   Lc    1  Sect  De   0x4b4
+    707  _fclose_internal           0x0000b93f   Lc    1  Code  De   0x64
+    708  .bss$5                     0x0000e478   Lc    3  Data  De 
+    709  ../../division.s           0x00000000   Lc  Abs  File  De 
+    710  .text                      0x0000bc7c   Lc    1  Sect  De   0x2c
+    711  ../../printf1.s            0x00000000   Lc  Abs  File  De 
+    712  x$fpl$printf1              0x0000df44   Lc    1  Sect  De   0x4
+    713  ../../printf2.s            0x00000000   Lc  Abs  File  De 
+    714  x$fpl$printf2              0x0000df4c   Lc    1  Sect  De   0x4
+    715  ../../longlong.s           0x00000000   Lc  Abs  File  De 
+    716  .text                      0x0000bcac   Lc    1  Sect  De   0xc
+    717  ../../unhosted.s           0x00000000   Lc  Abs  File  De 
+    718  .text                      0x0000bcb8   Lc    1  Sect  De   0x10
+    719  ../../angel/sysapp.c       0x00000000   Lc  Abs  File  De 
+    720  .constdata                 0x0000e100   Lc    1  Sect  De   0x4
+    721  .text                      0x0000bcc8   Lc    1  Sect  De   0x7a
+    722  .constdata                 0x0000e104   Lc    1  Sect  De   0x4
+    723  .constdata                 0x0000e0fc   Lc    1  Sect  De   0x4
+    724  .constdata$7               0x0000e0fc   Lc    1  Data  De 
+    725  .constdata$13              0x0000e100   Lc    1  Data  De 
+    726  .constdata$19              0x0000e104   Lc    1  Data  De 
+    727  ../../angel/sys.s          0x00000000   Lc  Abs  File  De 
+    728  .text                      0x0000bd48   Lc    1  Sect  De   0x18
+    729  ../../angel/sys.s          0x00000000   Lc  Abs  File  De 
+    730  .text                      0x0000bd64   Lc    1  Sect  De   0x8
+    731  ../../angel/rt.s           0x00000000   Lc  Abs  File  De 
+    732  .text                      0x0000bd6c   Lc    1  Sect  De   0xc
+    733  ../../angel/rt.s           0x00000000   Lc  Abs  File  De 
+    734  .text                      0x0000bd7c   Lc    1  Sect  De   0x1c
+    735  ../../heapalloc.c          0x00000000   Lc  Abs  File  De 
+    736  .text                      0x0000bd98   Lc    1  Sect  De   0xb2
+    737  ../../heapalloc.c          0x00000000   Lc  Abs  File  De 
+    738  .text                      0x0000be4a   Lc    1  Sect  De   0x1c
+    739  ../../longlong.s           0x00000000   Lc  Abs  File  De 
+    740  .text                      0x0000be6c   Lc    1  Sect  De   0xa0
+    741  ../../printf.c             0x00000000   Lc  Abs  File  De 
+    742  .text                      0x0000bf0c   Lc    1  Sect  De   0x2ec
+    743  .constdata                 0x0000e108   Lc    1  Sect  De   0x11
+    744  .constdata$1               0x0000e108   Lc    1  Data  De 
+    745  maptable@__printf_0        0x0000e108   Lc    1  Data  De   0x11
+    746  ../../printf.c             0x00000000   Lc  Abs  File  De 
+    747  .text                      0x0000c1f8   Lc    1  Sect  De   0x632
+    748  _fp_digits                 0x0000c1fb   Lc    1  Code  De   0x1e0
+    749  _fp_addexp                 0x0000c3db   Lc    1  Code  De   0x4a
+    750  ../../printf.c             0x00000000   Lc  Abs  File  De 
+    751  .text                      0x0000c82a   Lc    1  Sect  De   0x20
+    752  ../../printf.c             0x00000000   Lc  Abs  File  De 
+    753  .text                      0x0000c84a   Lc    1  Sect  De   0xa
+    754  ../../stdio.c              0x00000000   Lc  Abs  File  De 
+    755  .text                      0x0000c854   Lc    1  Sect  De   0xb4
+    756  ../../stdio.c              0x00000000   Lc  Abs  File  De 
+    757  .text                      0x0000c908   Lc    1  Sect  De   0x270
+    758  ../../stdio.c              0x00000000   Lc  Abs  File  De 
+    759  .text                      0x0000cb78   Lc    1  Sect  De   0x16c
+    760  ../../stdio.c              0x00000000   Lc  Abs  File  De 
+    761  .text                      0x0000cce4   Lc    1  Sect  De   0x84
+    762  ../../stdio.c              0x00000000   Lc  Abs  File  De 
+    763  .data                      0x0000e474   Lc    2  Sect  De   0x4
+    764  .data$6                    0x0000e474   Lc    2  Data  De 
+    765  ../../locale.c             0x00000000   Lc  Abs  File  De 
+    766  .text                      0x0000cd68   Lc    1  Sect  De   0x4a
+    767  ../../stdlib.c             0x00000000   Lc  Abs  File  De 
+    768  .text                      0x0000cdb2   Lc    1  Sect  De   0x14
+    769  ../../assert.c             0x00000000   Lc  Abs  File  De 
+    770  .text                      0x0000cdc8   Lc    1  Sect  De   0x1c
+    771  ../../memcpset.s           0x00000000   Lc  Abs  File  De 
+    772  .text                      0x0000cde8   Lc    1  Sect  De   0x58
+    773  _loop                      0x0000ce00   Lc    1  Code  De 
+    774  ../../stkheap1.s           0x00000000   Lc  Abs  File  De 
+    775  .text                      0x0000ce40   Lc    1  Sect  De   0x104
+    776  _heap_overflow             0x0000cf30   Lc    1  Code  De 
+    777  ../../armsys.c             0x00000000   Lc  Abs  File  De 
+    778  .emb_text                  0x00008070   Lc    1  Sect  De   0x10
+    779  argv                       0x0000807c   Lc    1  Data  De 
+    780  ../../armsys.c             0x00000000   Lc  Abs  File  De 
+    781  .text                      0x0000cf4c   Lc    1  Sect  De   0xce
+    782  ../../angel/boardlib.s     0x00000000   Lc  Abs  File  De 
+    783  .text                      0x0000d01c   Lc    1  Sect  De   0x4
+    784  ../../angel/boardlib.s     0x00000000   Lc  Abs  File  De 
+    785  .text                      0x0000d020   Lc    1  Sect  De   0xc
+    786  ../../angel/boardlib.s     0x00000000   Lc  Abs  File  De 
+    787  .text                      0x0000d02c   Lc    1  Sect  De   0x10
+    788  ../../angel/boardlib.s     0x00000000   Lc  Abs  File  De 
+    789  .text                      0x0000d03c   Lc    1  Sect  De   0x4
+    790  ../../longlong.s           0x00000000   Lc  Abs  File  De 
+    791  .text                      0x0000d044   Lc    1  Sect  De   0xc
+    792  ../../longlong.s           0x00000000   Lc  Abs  File  De 
+    793  .text                      0x0000d054   Lc    1  Sect  De   0xc
+    794  ../../angel/sys.s          0x00000000   Lc  Abs  File  De 
+    795  .text                      0x0000d060   Lc    1  Sect  De   0x50
+    796  ../../angel/sys.s          0x00000000   Lc  Abs  File  De 
+    797  .bss                       0x0000e544   Lc    3  Sect  De   0x60
+    798  .text                      0x0000d0b4   Lc    1  Sect  De   0xc
+    799  __libspace_start           0x0000e544   Lc    3  Data  De   0x60
+    800  ../../angel/sys.s          0x00000000   Lc  Abs  File  De 
+    801  .text                      0x0000d0c0   Lc    1  Sect  De   0x4
+    802  ../../angel/rt.s           0x00000000   Lc  Abs  File  De 
+    803  .text                      0x0000d0c8   Lc    1  Sect  De   0x18
+    804  ../../heapalloc.c          0x00000000   Lc  Abs  File  De 
+    805  .text                      0x0000d0e0   Lc    1  Sect  De   0x4
+    806  ../../heap1.c              0x00000000   Lc  Abs  File  De 
+    807  .text                      0x0000d0e4   Lc    1  Sect  De   0x7c
+    808  ../../heap1.c              0x00000000   Lc  Abs  File  De 
+    809  .text                      0x0000d160   Lc    1  Sect  De   0x44
+    810  ../../heap1.c              0x00000000   Lc  Abs  File  De 
+    811  .text                      0x0000d1a4   Lc    1  Sect  De   0x36
+    812  ../../bigflt.c             0x00000000   Lc  Abs  File  De 
+    813  .constdata                 0x0000e11c   Lc    1  Sect  De   0x94
+    814  .text                      0x0000d1dc   Lc    1  Sect  De   0xd0
+    815  .constdata$1               0x0000e11c   Lc    1  Data  De 
+    816  tenpwrs_x@_btod_etento_0   0x0000e11c   Lc    1  Data  De   0x3c
+    817  tenpwrs_i@_btod_etento_1   0x0000e158   Lc    1  Data  De   0x40
+    818  ../../btod.s               0x00000000   Lc  Abs  File  De 
+    819  CL$$btod_e2e               0x0000db14   Lc    1  Sect  De   0xdc
+    820  CL$$btod_mult_common       0x0000dc60   Lc    1  Sect  De   0x268
+    821  CL$$btod_div_common        0x0000d7c8   Lc    1  Sect  De   0x34c
+    822  CL$$btod_d2e               0x0000d6d4   Lc    1  Sect  De   0x38
+    823  CL$$btod_d2e_denorm_low    0x0000d70c   Lc    1  Sect  De   0x54
+    824  CL$$btod_d2e_norm_op1      0x0000d760   Lc    1  Sect  De   0x68
+    825  CL$$btod_ediv              0x0000dbf4   Lc    1  Sect  De   0x34
+    826  CL$$btod_emul              0x0000dc2c   Lc    1  Sect  De   0x34
+    827  _Recip_Table               0x0000da94   Lc    1  Data  De 
+    828  _e2e_underflow_dealtwith   0x0000db1c   Lc    1  Code  De 
+    829  _e2e_round_by_C            0x0000db24   Lc    1  Code  De 
+    830  _e2e_return_value          0x0000db60   Lc    1  Code  De 
+    831  _e2e_exact_or_tied         0x0000db6c   Lc    1  Code  De 
+    832  _e2e_underflow             0x0000db78   Lc    1  Code  De 
+    833  _e2e_underflow_huge        0x0000dbc8   Lc    1  Code  De 
+    834  _div_special_case          0x0000dc1c   Lc    1  Code  De 
+    835  _mul_uncommon              0x0000dc54   Lc    1  Code  De 
+    836  _Mult_64x32                0x0000dd88   Lc    1  Code  De 
+    837  _Mult_32xX                 0x0000de00   Lc    1  Code  De 
+    838  _Mult_32x32                0x0000de80   Lc    1  Code  De 
+    839  ../../stdio.c              0x00000000   Lc  Abs  File  De 
+    840  .text                      0x0000d2ac   Lc    1  Sect  De   0x24
+    841  ../../stdio.c              0x00000000   Lc  Abs  File  De 
+    842  .constdata                 0x0000e1b0   Lc    1  Sect  De   0x1
+    843  .constdata$7               0x0000e1b0   Lc    1  Data  De 
+    844  ../../locale.c             0x00000000   Lc  Abs  File  De 
+    845  .text                      0x0000d2d0   Lc    1  Sect  De   0x2c
+    846  .constdata                 0x0000e1b4   Lc    1  Sect  De   0x1c
+    847  .constdata$1               0x0000e1b4   Lc    1  Data  De 
+    848  __lcnum_c_index            0x0000e1b4   Lc    1  Data  De   0x4
+    849  __lcnum_c_lname            0x0000e1b8   Lc    1  Data  De   0x4
+    850  __lcnum_c_pname            0x0000e1bc   Lc    1  Data  De   0x4
+    851  __lcnum_c_start            0x0000e1c0   Lc    1  Data  De   0x4
+    852  __lcnum_c_tsoff            0x0000e1c4   Lc    1  Data  De   0x4
+    853  __lcnum_c_groff            0x0000e1c8   Lc    1  Data  De   0x4
+    854  __lcnum_c_dptxt            0x0000e1cc   Lc    1  Data  De   0x2
+    855  __lcnum_c_tstxt            0x0000e1ce   Lc    1  Data  De   0x1
+    856  __lcnum_c_grtxt            0x0000e1cf   Lc    1  Data  De   0x1
+    857  ../../signal.c             0x00000000   Lc  Abs  File  De 
+    858  .text                      0x0000d304   Lc    1  Sect  De   0x34
+    859  ../../string.c             0x00000000   Lc  Abs  File  De 
+    860  .text                      0x0000d338   Lc    1  Sect  De   0x48
+    861  ../../stkheap.s            0x00000000   Lc  Abs  File  De 
+    862  .text                      0x0000d384   Lc    1  Sect  De   0x10
+    863  ../../angel/boardlib.s     0x00000000   Lc  Abs  File  De 
+    864  .text                      0x0000d394   Lc    1  Sect  De   0x4
+    865  ../../istatus.s            0x00000000   Lc  Abs  File  De 
+    866  x$fpl$ieeestatus           0x0000df38   Lc    1  Sect  De   0x8
+    867  ../../fpinit.s             0x00000000   Lc  Abs  File  De 
+    868  x$fpl$fpinit               0x0000df1c   Lc    1  Sect  De   0x18
+    869  ../../classify.c           0x00000000   Lc  Abs  File  De 
+    870  .text                      0x0000d39c   Lc    1  Sect  De   0x44
+    871  ../../dtoi.c               0x00000000   Lc  Abs  File  De 
+    872  .text                      0x0000d3e4   Lc    1  Sect  De   0x78
+    873  ../../angel/rt.s           0x00000000   Lc  Abs  File  De 
+    874  .text                      0x0000d45c   Lc    1  Sect  De   0x14
+    875  ../../locale.c             0x00000000   Lc  Abs  File  De 
+    876  .constdata                 0x0000e1d0   Lc    1  Sect  De   0x10d
+    877  .text                      0x0000d470   Lc    1  Sect  De   0x2c
+    878  .constdata$1               0x0000e1d0   Lc    1  Data  De 
+    879  __lcctype_c_index          0x0000e1d0   Lc    1  Data  De   0x4
+    880  __lcctype_c_lname          0x0000e1d4   Lc    1  Data  De   0x4
+    881  __lcctype_c_pname          0x0000e1d8   Lc    1  Data  De   0x4
+    882  __lcctype_c_start          0x0000e1dc   Lc    1  Data  De   0x1
+    883  ../../stdlib.c             0x00000000   Lc  Abs  File  De 
+    884  .text                      0x0000d49c   Lc    1  Sect  De   0x1a
+    885  ../../signal.c             0x00000000   Lc  Abs  File  De 
+    886  .constdata                 0x0000e2dd   Lc    1  Sect  De   0x142
+    887  .text                      0x0000d4b8   Lc    1  Sect  De   0x108
+    888  .constdata$1               0x0000e2dd   Lc    1  Data  De 
+    889  messages@__default_signal_handler_0
+                                    0x0000e2dd   Lc    1  Data  De   0x142
+    890  ../../memcpset.s           0x00000000   Lc  Abs  File  De 
+    891  ../../memcpset.s           0x00000000   Lc  Abs  File  De 
+    892  .text                      0x0000d5c4   Lc    1  Sect  De   0xa0
+    893  _strcmp_loop               0x0000d5d8   Lc    1  Code  De 
+    894  _strcmp_return             0x0000d628   Lc    1  Code  De 
+    895  _strcmp_byteloop           0x0000d630   Lc    1  Code  De 
+    896  _strcmp_byteend            0x0000d658   Lc    1  Code  De 
+    897  _ones_word                 0x0000d660   Lc    1  Data  De   0x4
+    898  ../../scalbn.s             0x00000000   Lc  Abs  File  De 
+    899  x$fpl$scalbn               0x0000dfac   Lc    1  Sect  De   0x74
+    900  scanbn_denorm              0x0000dff4   Lc    1  Code  De 
+    901  scalbn_infnan              0x0000e008   Lc    1  Code  De 
+    902  ../../fpclassify.c         0x00000000   Lc  Abs  File  De 
+    903  .text                      0x0000d664   Lc    1  Sect  De   0x40
+    904  ../../angel/sysapp.c       0x00000000   Lc  Abs  File  De 
+    905  .text                      0x0000d6a4   Lc    1  Sect  De   0x10
+    906  ../../dcheck1.s            0x00000000   Lc  Abs  File  De 
+    907  x$fpl$dcheck1              0x0000df08   Lc    1  Sect  De   0x10
+    908  ../../retnan.s             0x00000000   Lc  Abs  File  De 
+    909  x$fpl$retnan               0x0000df50   Lc    1  Sect  De   0x5c
+    910  return_lognan              0x0000df84   Lc    1  Code  De 
+    911  return_fpnan               0x0000df90   Lc    1  Code  De 
+    912  ../../trapv.s              0x00000000   Lc  Abs  File  De 
+    913  x$fpl$trapveneer           0x0000e020   Lc    1  Sect  De   0x3c
+    914  cmp_generic                0x0000e03c   Lc    1  Code  De 
+    915  cmp_boolean                0x0000e054   Lc    1  Code  De 
+    916  ../../angel/scatter.s      0x00000000   Lc  Abs  File  De 
+    917  !!!scatter                 0x00008008   Lc    1  Sect  De   0x38
+    918  _region_table              0x00008038   Lc    1  Data  De 
+    919  ../../angel/handlers.s     0x00000000   Lc  Abs  File  De 
+    920  !!handler_zi               0x00008040   Lc    1  Sect  De   0x2c
+    921  _zero_loop                 0x00008050   Lc    1  Code  De 
+    922  BuildAttributes$$THUMB_ISAv1$ARM_ISAv4$M$PE$A:L22$X:L11$S22$IEEE1$IW$USESV6$~STKCKD$USESV7$~SHL$OSPACE$EBA8$REQ8$PRES8$EABIv2
+                                    0x00000000   Gb  Abs   --   De 
+    923  __main                     0x00008000   Gb    1  Code  Hi   0x8
+    924  __scatterload              0x00008008   Gb    1  Code  Hi 
+    925  __scatterload_rt2          0x00008008   Gb    1  Code  Hi   0x30
+    926  __scatterload_null         0x0000801c   Gb    1  Code  Hi 
+    927  __scatterload_zeroinit     0x00008040   Gb    1  Code  Hi   0x2c
+    928  $Ven$TA$I$$__ARM_argv_veneer
+                                    0x0000806d   Gb    1  Code  De 
+    929  __ARM_argv_veneer          0x00008070   Gb    1  Code  Hi   0x10
+    930  UnwindStart                0x00008080   Gb    1  Code  Hi   0x44
+    931  UnwPrintf                  0x000080c4   Gb    1  Code  Hi   0x28
+    932  UnwInvalidateRegisterFile  0x000080ec   Gb    1  Code  Hi   0x24
+    933  UnwInitState               0x00008110   Gb    1  Code  Hi   0x64
+    934  UnwReportRetAddr           0x00008174   Gb    1  Code  Hi   0x14
+    935  UnwMemWriteRegister        0x00008188   Gb    1  Code  Hi   0x24
+    936  UnwMemReadRegister         0x000081ac   Gb    1  Code  Hi   0x8c
+    937  UnwStartThumb              0x00008270   Gb    1  Code  Hi   0x12e8
+    938  UnwStartArm                0x000095a4   Gb    1  Code  Hi   0x1380
+    939  UnwMemHashRead             0x0000a9ac   Gb    1  Code  Hi   0x8c
+    940  UnwMemHashWrite            0x0000aa38   Gb    1  Code  Hi   0x90
+    941  UnwMemHashGC               0x0000aac8   Gb    1  Code  Hi   0x7c
+    942  tailFunc                   0x0000ab70   Gb    1  Code  Hi   0x4c
+    943  wind                       0x0000abbc   Gb    1  Code  Hi   0x84
+    944  tailCall                   0x0000ac40   Gb    1  Code  Hi   0x24
+    945  viaFuncPointer             0x0000ac64   Gb    1  Code  Hi   0x18
+    946  testStackResize            0x0000ac7c   Gb    1  Code  Hi   0x5c
+    947  testConst                  0x0000acd8   Gb    1  Code  Hi   0x30
+    948  testRecurse                0x0000ad08   Gb    1  Code  Hi   0x2c
+    949  testArm1                   0x0000ad34   Gb    1  Code  Hi   0x28
+    950  testArm                    0x0000ad5c   Gb    1  Code  Hi   0x8c
+    951  testPrintf                 0x0000ade8   Gb    1  Code  Hi   0x28
+    952  testVoid                   0x0000ae10   Gb    1  Code  Hi   0x8
+    953  main                       0x0000ae18   Gb    1  Code  Hi   0x14
+    954  $Ven$AT$I$$testThumb1      0x0000ae3c   Gb    1  Code  De 
+    955  testThumb1                 0x0000ae45   Gb    1  Code  Hi   0x18
+    956  testThumb                  0x0000ae5d   Gb    1  Code  Hi   0x16
+    957  CliInvalidateW             0x0000af08   Gb    1  Code  Hi   0x10
+    958  _printf_pre_padding        0x0000af31   Gb    1  Code  Hi   0x30
+    959  _printf_post_padding       0x0000af61   Gb    1  Code  De   0x24
+    960  _printf_str                0x0000af85   Gb    1  Code  Hi   0x5e
+    961  _printf_longlong_hex       0x0000afe5   Gb    1  Code  Hi   0xba
+    962  _printf_int_dec            0x0000b0b5   Gb    1  Code  Hi   0x68
+    963  printf                     0x0000b12d   Gb    1  Code  Hi   0x2e
+    964  $Ven$AT$I$$vprintf         0x0000b164   Gb    1  Code  De 
+    965  vprintf                    0x0000b16d   Gb    1  Code  Hi   0x28
+    966  $Ven$AT$I$$__0printf       0x0000b19c   Gb    1  Code  De 
+    967  __0printf                  0x0000b1a5   Gb    1  Code  Hi   0x2e
+    968  $Ven$AT$I$$__0sprintf      0x0000b1dc   Gb    1  Code  De 
+    969  __0sprintf                 0x0000b1e5   Gb    1  Code  Hi   0x28
+    970  __aeabi_memcpy4            0x0000b210   Gb    1  Code  Hi 
+    971  __aeabi_memcpy8            0x0000b210   Gb    1  Code  Hi 
+    972  __rt_memcpy_w              0x0000b210   Gb    1  Code  Hi   0x6c
+    973  _memcpy_lastbytes          0x0000b25c   Gb    1  Code  Hi 
+    974  $Ven$TA$I$$__aeabi_idivmod 0x0000b27d   Gb    1  Code  De 
+    975  __aeabi_idiv               0x0000b280   Gb    1  Code  Hi 
+    976  __aeabi_idivmod            0x0000b280   Gb    1  Code  Hi   0x164
+    977  __rt_entry                 0x0000b3e4   Gb    1  Code  Hi   0x4c
+    978  __rt_exit                  0x0000b430   Gb    1  Code  Hi   0x14
+    979  __rt_abort                 0x0000b444   Gb    1  Code  Hi   0x8
+    980  __aeabi_idiv0              0x0000b44c   Gb    1  Code  Hi   0x4
+    981  _printf_truncate_signed    0x0000b451   Gb    1  Code  De   0x16
+    982  _printf_truncate_unsigned  0x0000b467   Gb    1  Code  De   0x16
+    983  _printf_wctomb             0x0000b47d   Gb    1  Code  De   0xbc
+    984  _printf_int_common         0x0000b53d   Gb    1  Code  De   0xaa
+    985  _printf_longlong_oct       0x0000b5e9   Gb    1  Code  De   0x8e
+    986  _printf_longlong_dec       0x0000b681   Gb    1  Code  De   0x88
+    987  _printf_charcount          0x0000b719   Gb    1  Code  De   0x24
+    988  _printf_char_common        0x0000b73d   Gb    1  Code  De   0x2a
+    989  _sputc                     0x0000b771   Gb    1  Code  De   0xa
+    990  ferror                     0x0000b77b   Gb    1  Code  De   0x22
+    991  fputc                      0x0000b79d   Gb    1  Code  De   0x26
+    992  _seterr                    0x0000b7c5   Gb    1  Code  De   0x30
+    993  _writebuf                  0x0000b7f5   Gb    1  Code  De   0x64
+    994  _flushlinebuffered         0x0000b859   Gb    1  Code  De   0x42
+    995  _fflush                    0x0000b89b   Gb    1  Code  De   0x64
+    996  _deferredlazyseek          0x0000b8ff   Gb    1  Code  De   0x40
+    997  fclose                     0x0000b9a3   Gb    1  Code  De   0x20
+    998  freopen                    0x0000b9c3   Gb    1  Code  De   0xae
+    999  fopen                      0x0000ba71   Gb    1  Code  De   0x68
+    1000  _initio                    0x0000bad9   Gb    1  Code  De   0x150
+    1001  _terminateio               0x0000bc29   Gb    1  Code  De   0x42
+    1002  $Ven$TA$I$$__rt_udiv10     0x0000bc79   Gb    1  Code  De 
+    1003  __rt_udiv10                0x0000bc7c   Gb    1  Code  Hi   0x2c
+    1004  $Ven$TA$I$$__ARM_ll_cmpu   0x0000bca9   Gb    1  Code  De 
+    1005  __ARM_ll_cmpu              0x0000bcac   Gb    1  Code  Hi   0xc
+    1006  _ll_cmpu                   0x0000bcac   Gb    1  Code  Hi 
+    1007  __ARM_call_via_r0          0x0000bcb9   Gb    1  Code  Hi   0x2
+    1008  __call_via_r0              0x0000bcb9   Gb    1  Code  Hi 
+    1009  __ARM_call_via_r1          0x0000bcbb   Gb    1  Code  Hi   0x2
+    1010  __call_via_r1              0x0000bcbb   Gb    1  Code  Hi 
+    1011  __ARM_call_via_r2          0x0000bcbd   Gb    1  Code  Hi   0x2
+    1012  __call_via_r2              0x0000bcbd   Gb    1  Code  Hi 
+    1013  __ARM_call_via_r3          0x0000bcbf   Gb    1  Code  Hi   0x2
+    1014  __call_via_r3              0x0000bcbf   Gb    1  Code  Hi 
+    1015  __ARM_call_via_r4          0x0000bcc1   Gb    1  Code  Hi   0x2
+    1016  __call_via_r4              0x0000bcc1   Gb    1  Code  Hi 
+    1017  __ARM_call_via_r5          0x0000bcc3   Gb    1  Code  Hi   0x2
+    1018  __call_via_r5              0x0000bcc3   Gb    1  Code  Hi 
+    1019  __ARM_call_via_r6          0x0000bcc5   Gb    1  Code  Hi   0x2
+    1020  __call_via_r6              0x0000bcc5   Gb    1  Code  Hi 
+    1021  __ARM_call_via_r7          0x0000bcc7   Gb    1  Code  Hi   0x2
+    1022  __call_via_r7              0x0000bcc7   Gb    1  Code  Hi 
+    1023  _sys_open                  0x0000bcc9   Gb    1  Code  De   0x18
+    1024  _sys_close                 0x0000bce1   Gb    1  Code  De   0xe
+    1025  _sys_write                 0x0000bcef   Gb    1  Code  De   0x16
+    1026  _sys_read                  0x0000bd05   Gb    1  Code  De   0x10
+    1027  _sys_istty                 0x0000bd15   Gb    1  Code  De   0xc
+    1028  _sys_seek                  0x0000bd21   Gb    1  Code  De   0x12
+    1029  _sys_ensure                0x0000bd33   Gb    1  Code  De   0x4
+    1030  _sys_flen                  0x0000bd37   Gb    1  Code  De   0xc
+    1031  $Ven$TA$I$$_sys_exit       0x0000bd45   Gb    1  Code  De 
+    1032  _sys_exit                  0x0000bd48   Gb    1  Code  Hi   0x14
+    1033  $Ven$TA$I$$_mutex_initialize
+                                    0x0000bd61   Gb    1  Code  De 
+    1034  _mutex_initialize          0x0000bd64   Gb    1  Code  Hi   0x8
+    1035  __rt_div0                  0x0000bd6c   Gb    1  Code  Hi   0xc
+    1036  $Ven$TA$I$$__rt_raise      0x0000bd79   Gb    1  Code  De 
+    1037  __rt_raise                 0x0000bd7c   Gb    1  Code  Hi   0x1c
+    1038  _terminate_user_alloc      0x0000bd99   Gb    1  Code  De   0x2
+    1039  _init_user_alloc           0x0000bd9b   Gb    1  Code  De   0x2
+    1040  __Heap_Full                0x0000bd9d   Gb    1  Code  De   0x2a
+    1041  __Heap_Broken              0x0000bdc7   Gb    1  Code  De   0x10
+    1042  _init_alloc                0x0000bdd7   Gb    1  Code  De   0x5e
+    1043  malloc                     0x0000be35   Gb    1  Code  De   0x16
+    1044  free                       0x0000be4b   Gb    1  Code  De   0x1c
+    1045  $Ven$TA$I$$_ll_udiv10      0x0000be69   Gb    1  Code  De 
+    1046  _ll_udiv10                 0x0000be6c   Gb    1  Code  Hi   0xa0
+    1047  __printf                   0x0000bf0d   Gb    1  Code  De   0x2e8
+    1048  __lib_sel_fp_printf        0x0000c1f9   Gb    1  Code  De   0x2
+    1049  _fp_display                0x0000c425   Gb    1  Code  De   0x320
+    1050  _printf_fp_dec_real        0x0000c745   Gb    1  Code  De   0xe6
+    1051  _printf_outstr_char        0x0000c82b   Gb    1  Code  De   0x20
+    1052  _printf_input_char         0x0000c84b   Gb    1  Code  De   0xa
+    1053  _do_fflush                 0x0000c855   Gb    1  Code  De   0x68
+    1054  fflush                     0x0000c8bd   Gb    1  Code  De   0x42
+    1055  __flsbuf                   0x0000c909   Gb    1  Code  De   0x264
+    1056  _fseek                     0x0000cb79   Gb    1  Code  De   0x13c
+    1057  fseek                      0x0000ccb5   Gb    1  Code  De   0x2a
+    1058  setvbuf                    0x0000cce5   Gb    1  Code  De   0x6e
+    1059  setbuf                     0x0000cd53   Gb    1  Code  De   0x10
+    1060  _wcrtomb                   0x0000cd69   Gb    1  Code  De   0x4a
+    1061  exit                       0x0000cdb3   Gb    1  Code  Hi   0x14
+    1062  __lib_sel_stdio_assert     0x0000cdc9   Gb    1  Code  De   0x2
+    1063  __assert_puts              0x0000cdcb   Gb    1  Code  De   0x14
+    1064  $Ven$TA$I$$__aeabi_memclr4 0x0000cde5   Gb    1  Code  De 
+    1065  __aeabi_memclr4            0x0000cde8   Gb    1  Code  Hi 
+    1066  __aeabi_memclr8            0x0000cde8   Gb    1  Code  Hi 
+    1067  __rt_memclr_w              0x0000cde8   Gb    1  Code  Hi   0x58
+    1068  _memset_w                  0x0000cdec   Gb    1  Code  Hi 
+    1069  __rt_stackheap_init        0x0000ce40   Gb    1  Code  Hi   0x90
+    1070  __rt_heap_extend           0x0000ced0   Gb    1  Code  Hi   0x74
+    1071  $Ven$AT$I$$__rt_lib_init   0x0000cf44   Gb    1  Code  De 
+    1072  __rt_lib_init              0x0000cf4d   Gb    1  Code  Hi   0xb8
+    1073  __rt_lib_shutdown          0x0000d005   Gb    1  Code  Hi   0x16
+    1074  _platform_pre_stackheap_init
+                                    0x0000d01c   Gb    1  Code  Hi   0x4
+    1075  _platform_post_stackheap_init
+                                    0x0000d020   Gb    1  Code  Hi   0xc
+    1076  _platform_post_lib_init    0x0000d02c   Gb    1  Code  Hi   0x10
+    1077  _platform_pre_lib_shutdown 0x0000d03c   Gb    1  Code  Hi   0x4
+    1078  $Ven$TA$I$$__ARM_ll_neg    0x0000d041   Gb    1  Code  De 
+    1079  __ARM_ll_neg               0x0000d044   Gb    1  Code  Hi   0xc
+    1080  _ll_neg                    0x0000d044   Gb    1  Code  Hi 
+    1081  $Ven$TA$I$$__ARM_ll_cmpge  0x0000d051   Gb    1  Code  De 
+    1082  __ARM_ll_cmpge             0x0000d054   Gb    1  Code  Hi   0xc
+    1083  _ll_cmpge                  0x0000d054   Gb    1  Code  Hi 
+    1084  __user_initial_stackheap   0x0000d060   Gb    1  Code  Hi   0x50
+    1085  _RW_Limit                  0x0000d0ac   Gb    1  Data  Hi 
+    1086  $Ven$TA$I$$__user_perproc_libspace
+                                    0x0000d0b1   Wk    1  Code  De 
+    1087  __user_libspace            0x0000d0b4   Gb    1  Code  Hi   0x8
+    1088  __user_perproc_libspace    0x0000d0b4   Wk    1  Code  Hi 
+    1089  __user_perthread_libspace  0x0000d0b4   Wk    1  Code  Hi 
+    1090  __I_use_semihosting_swi    0x0000d0c0   Gb    1  Code  Hi   0x4
+    1091  __semihosting_swi_guard    0x0000d0c0   Gb    1  Code  Hi 
+    1092  $Ven$TA$I$$__rt_ctype_table
+                                    0x0000d0c5   Gb    1  Code  De 
+    1093  __rt_ctype_table           0x0000d0c8   Gb    1  Code  Hi   0x18
+    1094  __heap_guard               0x0000d0e1   Gb    1  Code  De   0x2
+    1095  __I_use_heap               0x0000d0e3   Gb    1  Code  De   0x2
+    1096  __Heap_Initialize          0x0000d0e5   Gb    1  Code  De   0xa
+    1097  __Heap_DescSize            0x0000d0ef   Gb    1  Code  De   0x4
+    1098  __Heap_Alloc               0x0000d0f3   Gb    1  Code  De   0x6a
+    1099  __Heap_Alloc_Internal      0x0000d15d   Gb    1  Code  De   0x4
+    1100  __Heap_Free                0x0000d161   Gb    1  Code  De   0x40
+    1101  __Heap_Free_Internal       0x0000d1a1   Gb    1  Code  De   0x4
+    1102  __Heap_ProvideMemory       0x0000d1a5   Gb    1  Code  De   0x36
+    1103  _btod_etento               0x0000d1dd   Gb    1  Code  De   0xca
+    1104  fputs                      0x0000d2ad   Gb    1  Code  De   0x24
+    1105  _get_lc_numeric            0x0000d2d1   Gb    1  Code  De   0x24
+    1106  $Ven$AT$I$$__raise         0x0000d2fc   Gb    1  Code  De 
+    1107  __raise                    0x0000d305   Gb    1  Code  Hi   0x34
+    1108  strlen                     0x0000d339   Gb    1  Code  De   0x44
+    1109  $Ven$TA$I$$__heap_extend   0x0000d381   Gb    1  Code  De 
+    1110  __heap_extend              0x0000d384   Gb    1  Code  Hi   0x10
+    1111  _cpu_pre_main              0x0000d394   Gb    1  Code  Hi   0x4
+    1112  $Ven$TA$I$$__mathlib_classify
+                                    0x0000d399   Gb    1  Code  De 
+    1113  __mathlib_classify         0x0000d39c   Gb    1  Code  De   0x44
+    1114  $Ven$TA$I$$__support_dtoi  0x0000d3e1   Gb    1  Code  De 
+    1115  __support_dtoi             0x0000d3e4   Gb    1  Code  De   0x78
+    1116  __rt_fp_status_addr        0x0000d45c   Gb    1  Code  Hi   0x14
+    1117  _get_lc_ctype              0x0000d471   Gb    1  Code  Hi   0x24
+    1118  abort                      0x0000d49d   Gb    1  Code  De   0x1a
+    1119  __default_signal_handler   0x0000d4b9   Gb    1  Code  De   0x86
+    1120  $Ven$TA$I$$strcmp          0x0000d5c1   Gb    1  Code  De 
+    1121  strcmp                     0x0000d5c4   Gb    1  Code  Hi   0x9c
+    1122  __ARM_fpclassify           0x0000d664   Gb    1  Code  De   0x3c
+    1123  _ttywrch                   0x0000d6a5   Gb    1  Code  De   0x10
+    1124  __aeabi_uidiv              0x0000d6b4   Gb    1  Code  Hi 
+    1125  __aeabi_uidivmod           0x0000d6b4   Gb    1  Code  Hi   0x1c
+    1126  $Ven$TA$I$$_btod_d2e       0x0000d6d1   Gb    1  Code  De 
+    1127  _btod_d2e                  0x0000d6d4   Gb    1  Code  Hi   0x38
+    1128  _d2e_denorm_low            0x0000d70c   Gb    1  Code  Hi   0x54
+    1129  _d2e_norm_op1              0x0000d760   Gb    1  Code  Hi   0x68
+    1130  __btod_div_common          0x0000d7c8   Gb    1  Code  Hi   0x2cc
+    1131  _e2e                       0x0000db14   Gb    1  Code  Hi   0xdc
+    1132  $Ven$TA$I$$_btod_ediv      0x0000dbf1   Gb    1  Code  De 
+    1133  _btod_ediv                 0x0000dbf4   Gb    1  Code  Hi   0x34
+    1134  $Ven$TA$I$$_btod_emul      0x0000dc29   Gb    1  Code  De 
+    1135  _btod_emul                 0x0000dc2c   Gb    1  Code  Hi   0x34
+    1136  __btod_mult_common         0x0000dc60   Gb    1  Code  Hi   0x268
+    1137  $Ven$AT$L$$testThumb       0x0000dec8   Gb    1  Code  De 
+    1138  $Ven$TA$S$$testRecurse     0x0000ded5   Gb    1  Code  De 
+    1139  $Ven$TA$S$$testArm1        0x0000dedd   Gb    1  Code  De 
+    1140  $Ven$AT$L$$__rt_lib_shutdown
+                                    0x0000dee4   Gb    1  Code  De 
+    1141  $Ven$TA$S$$__rt_exit       0x0000def1   Gb    1  Code  De 
+    1142  $Ven$AT$L$$_printf_fp_dec_real
+                                    0x0000def8   Gb    1  Code  De 
+    1143  __ARM_get_argv             0x0000df04   Gb    1  Code  Hi   0x4
+    1144  __fpl_dcheck_NaN1          0x0000df08   Gb    1  Code  De   0xc
+    1145  $Ven$TA$I$$_fp_init        0x0000df19   Gb    1  Code  De 
+    1146  _fp_init                   0x0000df1c   Gb    1  Code  Hi   0x18
+    1147  __fplib_config_pureend_doubles
+                                    0x0000df2c   Gb    1  Code  De 
+    1148  $Ven$TA$I$$__ieee_status   0x0000df35   Gb    1  Code  De 
+    1149  __ieee_status              0x0000df38   Gb    1  Code  Hi   0x8
+    1150  $Ven$TA$I$$_printf_fp_dec  0x0000df41   Gb    1  Code  De 
+    1151  _printf_fp_dec             0x0000df44   Gb    1  Code  De   0x4
+    1152  $Ven$TA$I$$_printf_fp_hex  0x0000df49   Gb    1  Code  De 
+    1153  _printf_fp_hex             0x0000df4c   Gb    1  Code  De   0x4
+    1154  __fpl_return_NaN           0x0000df50   Gb    1  Code  De   0x54
+    1155  __ARM_scalbn               0x0000dfac   Gb    1  Code  Hi 
+    1156  scalbln                    0x0000dfac   Gb    1  Code  De 
+    1157  scalblnl                   0x0000dfac   Gb    1  Code  De 
+    1158  scalbn                     0x0000dfac   Gb    1  Code  De   0x74
+    1159  scalbnl                    0x0000dfac   Gb    1  Code  De 
+    1160  __fpl_inf_scalbn           0x0000e01c   Gb    1  Code  De 
+    1161  __fpl_cmpreturn            0x0000e020   Gb    1  Code  De   0x3c
+    1162  cliCallbacks               0x0000e0c0   Gb    1  Data  Hi   0x14
+    1163  __stdin_name               0x0000e0fc   Gb    1  Data  De   0x4
+    1164  __stdout_name              0x0000e100   Gb    1  Data  De   0x4
+    1165  __stderr_name              0x0000e104   Gb    1  Data  De   0x4
+    1166  __select_optimised_fwrite  0x0000e1b0   Gb    1  Data  De   0x1
+    1167  __ctype                    0x0000e1dd   Gb    1  Data  De   0x100
+    1168  Region$$Table$$Base        0x0000e460   Gb    1   --   Hi 
+    1169  Region$$Table$$Limit       0x0000e470   Gb    1  Data  Hi 
+    1170  _stream_list_lock          0x0000e474   Gb    2  Data  Hi   0x4
+    1171  __stdin                    0x0000e478   Gb    3  Data  Hi   0x44
+    1172  __stdout                   0x0000e4bc   Gb    3  Data  Hi   0x44
+    1173  __stderr                   0x0000e500   Gb    3  Data  Hi   0x44
+    1174  Image$$ZI$$Limit           0x0000e5a4   Gb  Abs   --   Hi 
+
+
+** Section #6 '.strtab' (SHT_STRTAB)
+    Size   : 6440 bytes
+
+
+** Section #7 '.note' (SHT_NOTE)
+    Size   : 28 bytes (alignment 4)
+
+
+** Section #8 '.comment' (SHT_PROGBITS)
+    Size   : 36032 bytes
+
+
+** Section #9 '.shstrtab' (SHT_STRTAB)
+    Size   : 76 bytes
+
+

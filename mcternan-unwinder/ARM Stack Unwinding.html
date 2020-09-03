@@ -1,0 +1,700 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>ARM Stack Unwinding</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<style TYPE="text/css" MEDIA=screen>
+<!--
+  body  { background: white; color: black }
+  h2    { color: red }
+  div.fragment {
+    width: 98%;
+    border: 1px solid #CCCCCC;
+    background-color: #f5f5f5;
+    padding-left:   4px;
+    margin:         4px;
+  }
+  .caption {
+    font-weight: bold;
+    text-align:  center;
+    margin-top:  4px;
+  }
+-->
+</style>
+</head>
+<body bgcolor="#ffffff">
+<center>
+  <h1>ARM Stack Unwinding</h1>
+ August 2007
+</center>
+<hr>
+<h2>Introduction</h2>
+<p>
+Languages like C++ and Java have very useful facilities that allow a stack
+trace to be collected and displayed in a variety of ways.  In Java, a snapshot
+of the current stack trace can be taken simply by constructing a
+<CODE>Throwable</CODE> object, and the trace can be displayed using the
+<CODE>printStackTrace()</CODE> method.
+</p>
+<div class="fragment"><pre class="fragment">
+    Throwable t = new Throwable();
+
+    t.printStackTrace(System.out);
+</pre></div>
+<p class="caption">Example 1: Displaying the current call stack in Java.</p>
+<p>
+C++ offers similar facilities, and because of this, both these languages can
+provide useful information when an unexpected failure occurs and is
+detected.  For example, assertions maybe placed in the code with the failure
+action being to display the current stack trace to help the programmer debug
+the cause.
+</p>
+<p>
+Unfortunately C offers no such inbuilt luxury, and as such, debugging without a
+debugger or other logging mechanism maybe a little more difficult in the
+first instance.  This interests me as I've worked as an embedded engineer
+creating software for consumer devices which are extensively field tested
+containing code that makes extensive use of assertion macros.  I decided to
+investigate stack unwinding in order to enable better information to be
+gathered from devices that have failed in the field, with a goal to supporting
+stack tracing without the need for expensive or cumbersome supporting hardware.
+</p>
+<p>
+Therefore I decided to make an ARM stack unwinder that would be suitable to
+run on an embedded target to provide stack trace capabilities for C, similar
+to those already enjoyed by other languages.
+</p>
+<h2>Design Consideration</h2>
+<p>
+Since the target is an embedded processor in a consumer device, there are
+some restrictions on how the solution can be engineered and what options
+are available.  At the same time, knowing the target processor is likely
+to be an ARM7 or similar processor using the ARM and Thumb Instruction Set
+Architectures allows the solution to be targeted specifically to this
+family of RISC processors.
+</p>
+<p>
+The restrictions imposed by the embedded target are as follows:
+</p>
+<ul>
+<li>There is little free storage (RAM or ROM).
+<li>Large amounts of code will run from FLASH and cannot be modified.
+<li>The form factor device cannot be directly connected to a debugger.
+</ul>
+<p>
+Since storage is at a premium on these devices, I decided to forego use of
+debug tables as these would need embedding on the target and would be large,
+even if compressed.  Since code runs from FLASH, I also have to be careful
+that the solution does not try and patch any code - one stack unwinding
+approach described in the ARM APCS document is to 'patch' function entries
+and exits and to then execute code to cause the stack adjustments to be made
+and stack frames unwound.  (Patching code in FLASH is not easy since FLASH
+can generally only be erased in blocks and then written once i.e. it is not
+truly random access. Additionally erasing any block of FLASH could potentially
+permanently damage the device until it is reprogrammed, so that is a risk
+and complexity best avoided if at all possible).
+</p>
+<p>
+Finally the form factor devices usually don't bring out connectors for
+debugging such as JTAG.  This may sound weird, but all the pins on the
+package inside the device have a use and JTAG is usually multiplexed with
+something that is generally more useful, and exposing debug interfaces is
+also considered a security issue and frowned upon in the industry.
+Additionally having less external connectors makes Electrostatic Discharge
+(ESD) protection simpler as well as having other small benefits.  And in
+any case, Java requires no debugger to grab a stack trace, so why should C?
+</p>
+<h2>Method</h2>
+<p>
+Given the above restrictions, I decided that the best approach is to write
+a small model of the ARM processor which can interpret the code and look for
+the tell-tale signs of functions returning to divine the call stack.  Yup,
+I decided to write a model ARM processor to run on the ARM to interpret the
+code with the aim of unwinding the stack, as opposed to producing bit exact
+interpretation of the code.  Implementing the model ARM provides a couple
+of challenges that are laid out in the following subsections.
+</p>
+<h3>Function Epilogs</h3>
+<p>
+All functions look pretty much the same.  They have a prologue, a main body
+and an epilogue.  The compiler generates the prologue and epilogue on almost
+all functions (IRQ handling functions can be an explicit exception to this)
+to setup and teardown the stack frame used during the function body for things
+such as local variables.  Debug tables can give details about the location
+of function prologues and epilogues to assist debuggers in interpreting the
+stack at any time, but I don't have these, so have to locate them
+automatically.
+</p>
+<p>
+Since this is targeted at ARM processors, only ARM functions need to be
+considered.  Looking at a few epilogues, it can be seen that they generally
+look the same and take the format shown in the following examples:
+<div class="fragment"><pre class="fragment">
+ADD      sp,#0x28
+POP      {r4-r6,pc}
+</pre></div>
+<p class="caption">Example 2: Function epilog in Thumb.</p>
+<div class="fragment"><pre class="fragment">
+ADD      sp,sp,#0x28
+LDMFD    sp!,{r4-r6,pc}
+</pre></div>
+<p class="caption">Example 3: Function epilog in ARM.</p>
+<p>
+The examples show a stack adjustment to remove storage allocated for locals,
+then a restoration of the corrupted registers as required by the ARM ABI,
+and the restoration of the program counter (PC) from the stack effectively
+executing the return.  The return is very similar and can be detected easily
+regardless of processor operating mode (Thumb or ARM), although this raises
+an interesting question.  The examples show a return that is only suitable
+if the function is always called from code in the same operating mode as the
+function itself i.e. the Thumb return code can only be used if returning to
+Thumb code, and the same is also true for ARM code.  Practically it is
+sometimes the case that ARM code may call Thumb functions and vice versa,
+and this is known as interworking.  Fortunately the ARM ABI also describes
+interworking and more examples can be generated to show function epilogues
+used when interworking is required.
+</p>
+<div class="fragment"><pre class="fragment">
+ADD      sp,#0x28
+POP      {r4-r6}
+POP      {r3}
+BX       r3
+</pre></div>
+<p class="caption">Example 4: Function epilog in Thumb with interworking.</p>
+<div class="fragment"><pre class="fragment">
+ADD      sp,sp,#0x28
+LDMFD    sp!,{r4-r6,lr}
+BX       lr
+</pre></div>
+<p class="caption">Example 5: Function epilog in ARM with interworking.</p>
+<p>
+With interworking, the <CODE>BX</CODE> instruction is used to enable the
+processor mode to be changed at the same time as returning from the function.
+In each case, the return address is restored to a register before being used
+with the <CODE>BX</CODE> instruction to cause the return, where the least
+significant bit of the return address is used to indicate the desired
+processor mode once the branch has been taken.  So we now have a good idea
+of what we need to detect in order to determine where a function exits -
+the reading of a return address from the stack, it being loaded into the
+PC either directly by the load, or via a <CODE>BX</CODE> instruction.</p>
+<p>
+The first thing in the model ARM is therefore to store not only register
+contents, but a bit of data about where the contents originated from.  To
+do this, I've made a couple of types for my model ARM to use.
+</p>
+<div class="fragment"><pre class="fragment">
+typedef enum
+{
+    REG_VAL_INVALID      = 0x00,
+    REG_VAL_FROM_STACK   = 0x01,
+    REG_VAL_FROM_MEMORY  = 0x02,
+    REG_VAL_FROM_CONST   = 0x04,
+    REG_VAL_ARITHMETIC   = 0x80
+}
+RegValOrigin;
+
+typedef struct
+{
+    Int32              v;
+    RegValOrigin       o;
+}
+RegData;
+</pre></div>
+<p class="caption">Code 1: Representation of a register in the model ARM.</p>
+<p>
+Creating an array of <CODE>RegData</CODE> structures then allows the register
+file to be emulated.  The Program Counter (PC) and Stack Pointer (SP) can be
+added to the register file to give the model a basis to interpret code.</p>
+<p>
+At this point, two basic loops are added to the model - one to interpret Thumb
+code, and one to interpret ARM code and decoding for the <CODE>POP</CODE> and
+<CODE>LDMFD</CODE> instructions are added respectively.  When a value is loaded
+to a register, the <CODE>RegValOrigin</CODE> can now be updated to indicate that
+the data originated on the stack, <CODE>REG_VAL_FROM_STACK</CODE>, making it
+easy to spot a function returning when a <CODE>BX</CODE> is encountered for
+such a tracked register.  Interpretation of <CODE>BX</CODE> is therefore
+added to both the ARM and Thumb modes, faithfully checking the LSB of the
+branch address to change the interpretation mode between ARM and Thumb as
+needed.</p>
+<p>
+At this point, the model ARM is capable of detecting the return from a
+function.  This is a good start, but it needs to handle the stack adjustment
+if it is to be able to unwind more than one stack frame.  In the examples seen
+so far, the stack adjust has just been the addition of
+<CODE>0x28</cODE> to the stack pointer, although this will not always be the
+case.  Depending on the amount of stack data utilised by a function, the stack
+adjust maybe for a different value, and unfortunately not all adjustments can
+be accommodated by a single instruction.  The following shows an odd C function
+and the generated assembly.</P>
+<div class="fragment"><pre class="fragment">
+int testStackResize(void)
+{
+    char biggie[0x81111];
+    char *c = biggie;
+    int  t;
+
+    sprintf(biggie, "Hello");
+
+    t = 0;
+
+    while(*c)
+    {
+        t += *c;
+        c++;
+    }
+
+    runFunc();
+    return t;
+}
+</pre></div>
+<p class="caption">Example 6a: Function with odd stack usage.</p>
+<div class="fragment"><pre class="fragment">
+testStackResize PROC
+        LDR      r3,|L1.364| + 56
+        PUSH     {r4,r5,lr}
+        ADD      sp,r3
+        MOV      r0,sp
+        MOV      r4,sp
+        ADR      r1,|L1.364| + 60
+        BL       __0sprintf
+        MOV      r5,#0
+        B        |L1.202|
+|L1.198|
+        ADD      r5,r0,r5
+        ADD      r4,#1
+|L1.202|
+        LDRB     r0,[r4,#0]
+        CMP      r0,#0
+        BNE      |L1.198|
+        LDR      r0,|L1.364| + 68
+        LDR      r0,[r0,#0]  ; runFunc
+        BL       __call_via_r0
+        LDR      r3,|L1.364| + 56
+        MOV      r0,r5
+        NEG      r3,r3
+        ADD      sp,r3
+        POP      {r4,r5}
+        POP      {r3}
+        BX       r3
+
+</pre></div>
+<p class="caption">Example 6b: Assembly listing of function with odd stack usage.</p>
+<p>
+This fictional function is far from pretty, and the epilogue is somewhat
+more complicated.  The important instructions are the <CODE>LDR</CODE> into
+r3 from a constant memory address, then the <CODE>NEG</CODE> operation before
+the stack adjust.  Interlaced with this is an instruction to move the function's
+return value into r0 in accordance with the ABI.  This requires the model ARM not
+only to interpret a number of new instructions, but also provokes thought about
+how the compiler generates awkward constant values.</p>
+<p>
+In ARM and Thumb mode there are a number of ways in which to generate a
+constant value, and the model ARM will need to be able to interpret them all.
+Worse still is the possibility that the desired constant, or some part of it,
+has already been created for use by the function body an that the compiler
+will use this already constructed value.  This means that the model not only
+needs to be able to interpret any instructions that can be used to generate
+constant values, but that it needs to be able to look outside the function
+epilogue and into the function body too.  Therefore the model ARM becomes yet
+more sophisticated and now attempts to interpret every instruction of the
+program, starting at the PC and SP values from where the stack trace is
+required, and stopping when some to be determined criteria is met.
+</p>
+<p>
+Clearly it is desirable for the model ARM is to remain small, and so only the
+subset of instructions that are needed for stack unwinding should be
+implemented.  The required instructions that have been identified so far
+are those that are involved in constant value generation, stack adjusting
+and returning.  The question is what to do when an instruction that is
+not understood is encountered.  The solution to this is simple - invalidate
+all state and continue the interpretation!  As seen earlier, the
+registers also have a status attached to their value, one status being
+<CODE>REG_VAL_INVALID</CODE>.  Upon an uninterpreted instruction being
+found, all registered values, with the exception of the PC and SP are
+therefore invalidated.
+</p>
+<p>
+Now that register values can be invalid, the rules of arithmetic also have
+to change to propagate this meta data.  For example, a simple addition of
+two registers to yield a value in a third should produce a result with
+status <CODE>REG_VAL_INVALID</CODE> if either of the inputs is invalid.
+Additionally a register <CODE>MOV</CODE> should copy not only the register
+value, but the status too.  The following code fragment from the ARM
+interpreting loop shows how the propagation of the register status
+data is handled for Data Processing instructions.</p>
+<div class="fragment"><pre class="fragment">
+/* Propagate register validity */
+switch(arithOp)
+{
+    case  0: /* AND: Rd := Op1 AND Op2 */
+    case  1: /* EOR: Rd := Op1 EOR Op2 */
+    case  2: /* SUB: Rd:= Op1 - Op2 */
+    case  3: /* RSB: Rd:= Op2 - Op1 */
+    case  4: /* ADD: Rd:= Op1 + Op2 */
+    case 12: /* ORR: Rd:= Op1 OR Op2 */
+    case 14: /* BIC: Rd:= Op1 AND NOT Op2 */
+        if(!M_IsOriginValid(state->regData[rn].o) ||
+           !M_IsOriginValid(op2origin))
+        {
+            state->regData[rd].o = REG_VAL_INVALID;
+        }
+        else
+        {
+            state->regData[rd].o = state->regData[rn].o;
+            state->regData[rd].o |= op2origin;
+        }
+        break;
+    case  5: /* ADC: Rd:= Op1 + Op2 + C */
+    case  6: /* SBC: Rd:= Op1 - Op2 + C */
+    case  7: /* RSC: Rd:= Op2 - Op1 + C */
+        /* CPSR is not tracked */
+        state->regData[rd].o = REG_VAL_INVALID;
+        break;
+
+    case  8: /* TST: set condition codes on Op1 AND Op2 */
+    case  9: /* TEQ: set condition codes on Op1 EOR Op2 */
+    case 10: /* CMP: set condition codes on Op1 - Op2 */
+    case 11: /* CMN: set condition codes on Op1 + Op2 */
+        break;
+
+
+    case 13: /* MOV: Rd:= Op2 */
+    case 15: /* MVN: Rd:= NOT Op2 */
+        state->regData[rd].o = op2origin;
+        break;
+}
+</pre></div>
+<p class="caption">Code 2: Propagation of register state in interpretation
+of ARM Data Processing instruction.</p>
+<p>
+Now that the model is attempting to interpret all instructions, the handling
+of conditional code needs to be considered.  Specifically the model must
+meet the following requirements:</p>
+<ul>
+<li>It must find the function epilogue for any function.
+<li>It should not get stuck in loops.
+<li>Infinite loops should be detectable.
+<li>There should be no significant overhead on the interpretation.
+</ul>
+<p>
+ARM instructions employ conditional guarding, meaning that condition codes
+can be attached to most instructions such that they are only executed if the
+condition is met.  Thumb mode uses conditional branch instructions, <CODE>BNE</CODE>
+<CODE>BEQ</CODE> etc..., to achieve a similar goal, and in both cases the
+Status Register (SR) holds the condition flags which determine if a branch is
+taken or an ARM instruction executed.  Tracking the SR would apply overhead
+and make the model more complex, as will any sort of branch analysis to find
+infinite loops and function exits.  Therefore I make the following
+assumptions, to simplify the model ARM.
+<ul>
+<li>All conditional code can be ignored.
+<li>Conditional branches never need to be taken.
+<li>Unconditional branched must always be taken.
+</ul>
+<p>It seems highly unlikely that the function epilogue will contain
+conditional code and the 'stack moves once' rule of the ABI means that there
+is no risk of needing to conditionally correct the stack depending on the
+path taken through the function.  Unconditional branches must always be
+taken since without them it is possible that interpretation could wander
+into another function or data area.  Ignoring conditional branches also
+greatly simplifies the interpreter, but introduces a risk that some loops
+may appear infinite, as the following example shows.</p>
+<div class="fragment"><pre class="fragment">
+int loop()
+{
+    while(1)
+    {
+        int v = getch();
+
+        if(v == EOF)      { break; }
+        else if(v == 10)  { printf("\n"); }
+        else              { printf("%c", v); }
+    }
+
+    return funcB();
+}
+</pre></div>
+<p class="caption">Example 7a: Example loop where the exit condition is
+tested within the loop.
+<div class="fragment"><pre class="fragment">
+loop PROC
+        PUSH     {r4,lr}
+|L1.2|
+        BL       getch
+        CMP      r0,#0
+        BEQ      |L1.32|
+        CMP      r0,#0xa
+        BNE      |L1.22|
+        ADR      r0,|L1.36|
+        BL       __0printf
+        B        |L1.2|
+|L1.22|
+        MOV      r1,r0
+        ADR      r0,|L1.36| + 4
+        BL       __0printf
+        B        |L1.2|
+|L1.32|
+        POP      {r4,pc}
+        DCW      0000
+|L1.36| DATA
+        DCB      "\n\0\0\0"
+        DCB      "%c\0\0"
+        ENDP
+</pre></div>
+<p class="caption">Example 7b: Thumb assembly showing compiler output.</p>
+<p>
+In the above example, the <CODE>BEQ</CODE> needs to be taken in order to
+reach the function epilogue.  Without understanding of the Status Register,
+the model ARM cannot do this, so instead gets stuck in the loop - this is
+the first caveat of the scheme.  Accepting for the moment that this type of
+construct may occur (although I personally would try to avoid writing such
+C code as it misses the purpose of the while statement!), a scheme for
+detecting an infinite loop is required.  I opt simply to count the number
+of instructions since a function return was discovered, and to stop the
+interpretation if some predefined limit is exceeded.  This is very simple,
+and has little overhead, although may take longer to determine that
+unwinding is stuck than a more analytical approach would allow.
+</p>
+<p>
+At this point, the model ARM should be capable of unwinding most stacks,
+has the ability to interpret all the code that could appear in a function
+epilogue and can interpret and detect returning to a register value
+sourced from the stack.  The interpreter has a simple method to blunder
+into most function epilogues and also has a primitive method of detecting
+when it is stuck in an infinite loop.  A little polish can be applied to
+trap cases such as the branching to a register whose value is invalid and
+the scheme is basically working.  However, there are a couple of surprises
+yet...</p>
+<h3>Function Prologues</h3>
+<p>
+So far the model ARM has been built to concentrate on unwinding the
+stack frames by interpretation of code leading up to and including the
+function epilogues - the prologue has not needed consideration.  However,
+there is an optimisation that can be supplied by a compiler that causes
+prologues to become significant.  The optimisation is 'tail calling' but
+is not specific to ARM architectures.</p>
+<p>
+Tail calling is when a function always calls another function as the last
+thing that it does before returning.  The compiler can spot this pattern
+and instead of generating return code from the first function, it can
+call the second function in such a way that its return code will return to
+the original caller.
+</p>
+<div class="fragment"><pre class="fragment">
+void tailCall(int v)
+{
+    v *= v;
+    printf("%d", v);
+    tailFunc(v);
+}
+</pre></div>
+<p class="caption">Example 8a: Function that makes a tail call.
+<div class="fragment"><pre class="fragment">
+tailCall PROC
+        STMFD    sp!,{r4,lr}
+        MUL      r4,r0,r0
+        MOV      r1,r4
+        ADR      r0,|L1.524|
+        BL       __0printf
+        MOV      r0,r4
+        LDMFD    sp!,{r4,lr}
+        B        tailFunc
+        ENDP
+</pre></div>
+<p class="caption">Example 8b: ARM assembly listing of tail call function.
+<p>
+In this case, the Link Register (LR) is restored from the stack, but instead
+of the commonly seen <CODE>BX</CODE>, an unconditional branch is made to
+<CODE>tailFunc()</CODE>, such that <CODE>tailFunc()</CODE> will instead
+return to the value placed in the LR.  It's a small optimisation
+that saves a word and a few cycles, but it complicates the interpretation
+performed by the model ARM.
+<p>
+To accommodate this, the model ARM must either be aware of tail calling and
+ignore it, or must additionally be able to interpret function prologues.
+Detecting the tail call would not be impossible, the pattern or restoring the
+Link Register from the stack and then unconditionally branching is detectable,
+but there could be a small risk of misdetection if the LR were
+used in a function body for any purpose such as temporary storage or
+arithmetic.</p>
+<p>
+Interpreting a function prologue is much the same as interpreting an epilogue
+and the same instructions will be used to generate the constant value for
+the stack adjust.  However, whereas previously all values were being read
+from memory and the stack, some values are now stored to the stack to save
+state before the function executes.  This could potentially damage the stack
+on an executing system, so a small hash table to store memory addresses and
+their values is implemented to store stack data instead; before reading from
+memory the hash table is inspected, and if a value is found it is used in
+place of the value from the device memory.  Since function prologues are
+likely to start with a <CODE>PUSH</CODE> or <CODE>STMFD</CODE> instruction,
+there is also the possibility of an invalid register value being stored to
+memory, so the memory hash has to allow for storage of some state data to
+prevent an invalid register value becoming valid if it is <CODE>PUSH</CODE>ed
+and then <CODE>POP</CODE>ed from the stack.  Finally, to prevent the memory
+hash needing to be large or risk overflowing, it is periodically purged of
+data stored at addresses that are above the current top of the stack.</p>
+<h3>Caveats</h3>
+<p>
+And there we have it - a scheme performing a kind of abstract interpretation
+of ARM or Thumb code in order to unwind the stack frames.  However, while
+small, this method of abstract interpretation is not quite perfect.  There
+are a number of situations where it will not work, although the general case
+so far suggests that it works very well in practice.  Still, there are
+limitations, and these are best listed.</p>
+<ul>
+<li>It is possible for the compiler to construct loops that appear as infinite
+due to the lack of interpretation of conditional code or branches.
+<li>The unwinder interprets the return path of the code.  While this is
+generally the same or very similar to the calling path, there are
+circumstances where the two can be subtlety different.
+<li>It is easy to construct code by hand that fools the interpretation.
+<li>If the stack has already been corrupted, unwinding cannot succeed.
+</ul>
+<p>
+The problem of infinite loops could be dealt with by adding a random element
+to interpretation.  For example, if the model suspects itself to be stuck
+in an infinite loop (a large number of instructions have been interpreted
+with no function epilogue being found), it may start randomly taking
+conditional branches in an attempt to 'chance upon' the function epilogue.
+While more sophisticated methods of exiting infinite loops, such as tracking
+the PC and marking branch history, could be implemented, they would require
+more memory and complexity for something that has rarely been found to cause
+a problem in practical usage of the unwinder.</p>
+<p>
+A greater problem with no solution is that of tail calling masking functions
+from the unwound stack.  If the interpretation is started from a function
+that was tail called, the function that made the tail call will be omitted
+from the unwound stack.  In example 8, unwinding started from
+<CODE>tailFunc()</CODE> or a sub-function thereof would omit to report
+<CODE>tailCall()</CODE> since the return path would not pass through that
+function.  In hindsight it may have been better to run the model ARM
+backwards, although this presents different problems.
+</p>
+<H2>Implementation</H2>
+<p>
+The following shows the amount of code and data occupied by the unwinder
+when compiler using RVCT2.1, compiled to Thumb code with -O2.  The totals
+show that under 3k of ROM is used to implement the model ARM, which is
+very acceptable for my application.
+</p>
+<CENTER><TABLE BORDER=1>
+<TR>
+  <TH>Code</TH><TH>(inc. data)</TH><TH>RO Data</TH><TH>RW Data</TH><TH>ZI Data</TH><TH>Library Member Name</TH>
+</TR>
+<TR ALIGN=right>
+  <TD>44</TD><TD>0</TD><TD>0</TD><TD>0</TD><TD>0</TD><TD>unwarminder.o</TD>
+</TR>
+<TR ALIGN=right>
+  <TD>182</TD><TD>0</TD><TD>0</TD><TD>0</TD><TD>0</TD><TD>unwarm.o</TD>
+</TR>
+<TR ALIGN=right>
+  <TD>904</TD><TD>68</TD><TD>0</TD><TD>0</TD><TD>0</TD><TD>unwarm_arm.o</TD>
+</TR>
+<TR ALIGN=right>
+  <TD>1198</TD><TD>60</TD><TD>0</TD><TD>0</TD><TD>0</TD><TD>unwarm_thumb.o</TD>
+</TR>
+<TR ALIGN=right>
+  <TD>300</TD><TD>0</TD><TD>0</TD><TD>0</TD><TD>0</TD><TD>unwarmmem.o</TD>
+</TR>
+<TR ALIGN=right>
+  <TD>2628</TD><TD>128</TD><TD>0</TD><TD>0</TD><TD>0</TD><TD>Totals</TD>
+</TR>
+</TABLE></CENTER>
+<p class="caption">Table 1: Unwinder code size (using RVCT2.1, TCC -O2).</p>
+<p>
+The unwinding code is implemented in a handful of files, and a single header
+file named <CODE>unwarminder.h</CODE> needs to be included to access the
+functionality.  Accessing to the system memory from the unwinder is
+abstracted through callbacks that must be implemented by the 'client'
+code, and this allows reads to be validated such that unwinding is
+stopped if alignment or the address being read is at fault.  The client
+code passes a small structure of function pointers to the unwinder to
+equip it with the callbacks required to read memory and report return
+addresses.</p>
+<p>
+The function that starts the unwinding is given as follows:
+</p>
+<div class="fragment"><pre class="fragment">
+UnwResult UnwindStart(Int32                  spValue,
+                      const UnwindCallbacks *cb,
+                      void                  *data);
+</pre></div>
+<p class="caption">Code 3: The function to start unwinding.</p>
+<p>
+The <CODE>cb</CODE> structure gives the callbacks to allow memory
+accesses and return address reporting, while the <CODE>data</CODE>
+pointer can take any value and is passed to the reporting function
+(<CODE>cb->report()</CODE>) such that it may store state if required.
+</p>
+<p>
+The <CODE>spValue</CODE> gives the stack pointer value at which to
+start unwinding; the PC value is determined automatically as it is
+effectively passed to the function via the Link Register and so can
+be retrieved.  When using RVCT, the compiler intrinsic function
+<CODE>__current_sp()</CODE> allows the SP value to be read into a
+variable, so a call to start unwinding typically looks something
+like the following:</p>
+<div class="fragment"><pre class="fragment">
+const UnwindCallbacks cliCallbacks = { ... };
+CliStack              results;
+Int8                  t;
+UnwResult             r;
+
+results.frameCount = 0;
+r = UnwindStart(__current_sp(), &amp;cliCallbacks, &amp;results);
+</pre></div>
+<p class="caption">Code 4: Typical call to start unwinding, passing
+a pointer to some structure that lists all the callbacks, as well as
+a pointer to local storage.
+</p>
+<p>
+Finally, the implementation is not aware of any OS or memory protection
+or management schemes that maybe in use on the target.  The system on which
+this has been tested is simply configured with a flat memory map and has
+few restrictions on memory access, and the RTOS used poses no restrictions
+either.  It maybe the case that to use this on other targets the MMU or
+MPU has to be reconfigured or disabled before unwinding is started, or the
+functions used by the unwinder to access the memory specially constructed
+to ensure that memory protections will not cause a problem.  Should the
+unwinder request access to addresses that are genuinely invalid, the
+client functions for memory access can return <CODE>FALSE</CODE> to indicate
+that the memory cannot be accessed, and unwinding will terminate.
+</p>
+<H2>Licence and Download</H2>
+<p>
+The source code for the stack unwinder is available for free download and I'm
+making it PUBLIC DOMAIN.  This means that there is no copyright and anyone
+is able to take a copy for free and use it as they wish, with or without
+modifications, and in any context they like, commercially or otherwise.
+The only limitation is that I don't guarantee that the software is fit
+for any purpose or accept any liability for its use or misuse - the software
+is without warranty.</p>
+<p>
+Having said all this, the software has been ran under Valgrind and tested
+both in PC simulations (using ARMSD) and on ARM7TDMI and ARM920T targets.
+</p>
+<p>
+The download package is available here (right-click, Save As...):</p>
+<UL>
+<LI><A href="wind.tar.gz">wind.tar.gz</A> (64k) - updated 12/07/2007
+</UL>
+<p>
+This package contains the source code for the unwinder as well as two 'clients'
+that allow the unwinder to be exercised.  The first client is contained in two
+files, <CODE>client.c</CODE> and <CODE>client.h</CODE> and can be built to
+produce an image that can be executed either on an ARM target or in an emulator
+and demonstrates the unwinding of the stack from which the unwinder is called.
+The second client is the 'simulation' client, <CODE>simclient.c</CODE> and
+<CODE>simclient.h</CODE>, which uses two memory images that are also supplied
+and contain a snapshot of a call stack and executable code which allows
+interpretation by the unwinder on a PC, where PC tools can also be used to
+debug the unwinder.  The memory images supplied cannot however be ran on a
+target since I've zero'd the areas of code that are not needed to demonstrate
+the unwinder such that the ARM runtime is not present in binary form.
+</p>
+<hr>
+<center><font size="-1">
+This page is maintained by
+<a href="mailto:Michael.McTernan.2001@cs.bris.ac.uk">Michael McTernan</a>
+</font></center>
+</body></html>
