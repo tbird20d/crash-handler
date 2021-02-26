@@ -41,3 +41,4 @@ perform this installation.  This won't work for you.  You can change the
 'install' target in the Makefile to the following line:
 
  install: default_install
+
